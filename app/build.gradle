@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 26
@@ -7,9 +22,10 @@ android {
         applicationId "com.learnacad.learnacad"
         minSdkVersion 19
         targetSdkVersion 26
-        versionName "2.1.1"
+        versionName "2.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 5
+        versionCode 10
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -22,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.firebase:firebase-config:11.8.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -41,14 +59,23 @@ dependencies {
     compile 'com.github.pchmn:MaterialChipsInput:1.0.8'
     compile 'android.arch.lifecycle:extensions:1.0.0-alpha9-1'
     compile 'android.arch.lifecycle:runtime:1.0.3'
-    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.firebase:firebase-messaging:11.4.2'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.airbnb.android:lottie:2.2.5'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testCompile 'junit:junit:4.12'
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.2'
     compile 'es.voghdev.pdfviewpager:library:1.0.3'
+    compile 'com.flurry.android:ads:8.2.0'
+    compile 'com.brouding:android-simple-dialog:0.3.1'
+
 
     compile project(path: ':sweetalertlib')
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
 }
 
 

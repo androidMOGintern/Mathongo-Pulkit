@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -46,7 +48,17 @@ import static com.orm.SugarRecord.listAll;
 
 public class LecturePlayerActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
+    }
 
     public static final String GOOGLE_DEVELOPER_KEY = "AIzaSyBrJtaqoS-xR6LdGTdlSHJm7pp8pBTGrEE";
     public static String YOUTUBE_CODE;
@@ -69,11 +81,13 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         progressBar = findViewById(R.id.pb);
         progressBar.setIndeterminate(true);
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
 
         if(!isConnected()){
 
             new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                    .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
             return;
@@ -83,7 +97,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         Intent intent = getIntent();
         Lecture selectedLecture = (Lecture) intent.getSerializableExtra("selectedLecture");
     //    tutor = (Tutor) intent.getSerializableExtra("selectedTutor");
-        int position = intent.getIntExtra("selectedPosition",0);
+        final int position = intent.getIntExtra("selectedPosition",0);
         lectures = (ArrayList<Lecture>) intent.getSerializableExtra("lectureList");
 
 
@@ -170,7 +184,10 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                     @Override
                     public void onClick(View v) {
 
-                            dialog.cancel();
+                        FlurryAgent.logEvent("Report_"+ lectures.get(position).getName() + "Clicked");
+
+
+                        dialog.cancel();
 
                             final int lesson_id = lectures.get(currPosition).getLecture_id();
                             List<SessionManager> sessionManagers = listAll(SessionManager.class);
@@ -201,7 +218,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                                                 } catch (JSONException e) {
                                                     new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                            .setContentText("There seems a problem with us.\nPlease try again later.")
+                                                            .setContentText("There seems a problem with us.\nPlease try again later.(101LP_RE)")
                                                             .setTitleText("Oops..!!")
                                                             .show();
                                                 }
@@ -212,7 +229,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                             @Override
                                             public void onError(ANError anError) {
                                                 new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                        .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                                        .setContentText("Connection Error!\nPlease try again later.(202LP_RE)")
                                                         .setTitleText("Oops..!!")
                                                         .show();
                                                 progressBar.setVisibility(View.GONE);
@@ -260,6 +277,8 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             @Override
             public void onClick(View view) {
 
+                FlurryAgent.logEvent("Upvote_"+ lectures.get(position).getName() + "Clicked");
+
                 if(!lectures.get(currPosition).isUpVoted()) {
 
                     final int lesson_id = lectures.get(currPosition).getLecture_id();
@@ -279,7 +298,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                         if (success.contentEquals("true")) {
 
                                             lectures.get(currPosition).setUpVoted(true);
-                                            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.upvoteiconactive, 0, 0);
+                                            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.new_upvoteactive_layer_list_drawable, 0, 0);
                                             int numOfUpVotes = lectures.get(currPosition).getUpvotes();
                                             ++numOfUpVotes;
                                             lectures.get(currPosition).setUpvotes(numOfUpVotes);
@@ -288,7 +307,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                                     } catch (JSONException e) {
                                         new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                .setContentText("There seems a problem with us.\nPlease try again later.")
+                                                .setContentText("There seems a problem with us.\nPlease try again later.(101LP_UP)")
                                                 .setTitleText("Oops..!!")
                                                 .show();
                                     }
@@ -299,7 +318,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                 @Override
                                 public void onError(ANError anError) {
                                     new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                            .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                            .setContentText("Connection Error!\nPlease try again later.(202LP_UP)")
                                             .setTitleText("Oops..!!")
                                             .show();
                                 }
@@ -337,7 +356,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                                     } catch (JSONException e) {
                                         new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                .setContentText("There seems a problem with us.\nPlease try again later.")
+                                                .setContentText("There seems a problem with us.\nPlease try again later.(101LP_BO)")
                                                 .setTitleText("Oops..!!")
                                                 .show();
                                     }
@@ -349,7 +368,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                 @Override
                                 public void onError(ANError anError) {
                                     new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                            .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                            .setContentText("Connection Error!\nPlease try again later.(202LP_BO)")
                                             .setTitleText("Oops..!!")
                                             .show();
                                     progressBar.setVisibility(View.GONE);
@@ -424,7 +443,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
 
         if(lectures.get(postion).isUpVoted()){
-            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.upvoteiconactive,0,0);
+            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.new_upvoteactive_layer_list_drawable,0,0);
         }else{
 
             checkUpvoted(postion);
@@ -464,7 +483,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LP_IB)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -475,7 +494,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                     @Override
                     public void onError(ANError anError) {
                         new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LP_IB)")
                                 .setTitleText("Oops..!!")
                                 .show();
                     }
@@ -519,7 +538,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         }else{
 
             new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                    .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
         }
@@ -543,7 +562,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                             if(success.contentEquals("true")){
 
                                 lectures.get(pos).setUpVoted(true);
-                                upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.upvoteiconactive,0,0);
+                                upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.new_upvoteactive_layer_list_drawable,0,0);
                                 int numOfUpVotes = lectures.get(currPosition).getUpvotes();
                                 ++numOfUpVotes;
                                 lectures.get(currPosition).setUpvotes(numOfUpVotes);
@@ -552,7 +571,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LP_IU)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -562,7 +581,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                     @Override
                     public void onError(ANError anError) {
                         new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LP_IU)")
                                 .setTitleText("Oops..!!")
                                 .show();
                     }

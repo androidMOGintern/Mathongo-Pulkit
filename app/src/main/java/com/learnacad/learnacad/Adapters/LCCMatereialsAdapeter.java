@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.MaterialViewActivity;
 import com.learnacad.learnacad.Fragments.LCCMaterialsFragment;
 import com.learnacad.learnacad.Models.Material;
@@ -46,12 +48,20 @@ public class LCCMatereialsAdapeter extends RecyclerView.Adapter<LCCMatereialsAda
     String path;
     ArrayList<Material> materials;
     LCCMaterialsFragment fragment;
+    public boolean enrolled;
 
-    public LCCMatereialsAdapeter(Context context,ArrayList<Material> materials,LCCMaterialsFragment fragment){
+    public LCCMatereialsAdapeter(Context context,ArrayList<Material> materials,LCCMaterialsFragment fragment,boolean enrolled){
 
-        mContext = context;
+        this.mContext = context;
         this.materials = materials;
         this.fragment = fragment;
+        this.enrolled = enrolled;
+    }
+
+    public void isEnrolledChanged(){
+
+        this.enrolled = true;
+
     }
 
 
@@ -70,180 +80,66 @@ public class LCCMatereialsAdapeter extends RecyclerView.Adapter<LCCMatereialsAda
 
         holder.titleTextView.setText(m.getName());
 
-        holder.downloadImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (checkPermission()) {
 
-                    path = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS;
 
-                    File file = new File(path + "/" + m.getName());
 
-                    File fileDownloads = new File(path);
+            holder.downloadImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                    File[] filesExisting = fileDownloads.listFiles();
+                    if (!enrolled) {
 
-                    for (File file1 : filesExisting) {
+                        new SweetAlertDialog(mContext,SweetAlertDialog.ERROR_TYPE)
+                                .setContentText("Please Enroll to view the lectures")
+                                .setTitleText("Oops...")
+                                .show();
 
-                        if (String.valueOf(file1).equals(String.valueOf(file))) {
-
-                            isDownloaded = true;
-                            break;
-                        }
-                    }
-
-                    if (isDownloaded) {
-
-                        Intent intent = new Intent(mContext, MaterialViewActivity.class);
-                        intent.putExtra("path", path);
-                        intent.putExtra("title", m.getName());
-                        mContext.startActivity(intent);
 
                     } else {
 
-                        AndroidNetworking.download(Api_Urls.BASE_URL + "uploads/" + m.getMinicourseId() + "/" + m.getName(), path, m.getName())
-                                .build()
-                                .startDownload(new DownloadListener() {
-                                    @Override
-                                    public void onDownloadComplete() {
-                                        Toast.makeText(mContext, m.getName() + " downloaded", Toast.LENGTH_SHORT).show();
-                                        DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                                        if (downloadManager != null) {
-                                            File file = new File(path, m.getName());
-                                            Intent intent = new Intent(mContext, MaterialViewActivity.class);
-                                            intent.putExtra("path", path);
-                                            intent.putExtra("title", m.getName());
-                                            mContext.startActivity(intent);
-                                            downloadManager.addCompletedDownload(m.getName(), " ", false, "application/pdf", path, file.length(), true);
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(ANError anError) {
-
-                                        Log.d("materialsFileCheck", anError.getMessage());
-                                    }
-                                });
-
+                        itemClickListener(m);
                     }
-
-                }else{
-
-                    new SweetAlertDialog(mContext,SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Oops...")
-                            .setContentText("It seems you haven't given the permission to access the storage.\nPlease give the permission to access the materials.")
-                            .setConfirmText("OK")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                            Uri.parse("package:" + mContext.getPackageName()));
-
-                                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    mContext.startActivity(intent);
-                                }
-                            })
-                            .show();
                 }
-            }
-        });
+            });
+
+
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    if (checkPermission()) {
 
-                        path = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS;
+                    if(!enrolled){
 
-                        File file = new File(path + "/" + m.getName());
-
-                        File fileDownloads = new File(path);
-
-                        File[] filesExisting = fileDownloads.listFiles();
-
-                        for (File file1 : filesExisting) {
-
-                            if (String.valueOf(file1).equals(String.valueOf(file))) {
-
-                                isDownloaded = true;
-                                break;
-                            }
-                        }
-
-                        if (isDownloaded) {
-
-                            Intent intent = new Intent(mContext, MaterialViewActivity.class);
-                            intent.putExtra("path", path);
-                            intent.putExtra("title", m.getName());
-                            mContext.startActivity(intent);
-
-                        } else {
-
-                            AndroidNetworking.download(Api_Urls.BASE_URL + "uploads/" + m.getMinicourseId() + "/" + m.getName(), path, m.getName())
-                                    .build()
-                                    .startDownload(new DownloadListener() {
-                                        @Override
-                                        public void onDownloadComplete() {
-                                            Toast.makeText(mContext, m.getName() + " downloaded", Toast.LENGTH_SHORT).show();
-                                            DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                                            if (downloadManager != null) {
-                                                File file = new File(path, m.getName());
-                                                Intent intent = new Intent(mContext, MaterialViewActivity.class);
-                                                intent.putExtra("path", path);
-                                                intent.putExtra("title", m.getName());
-                                                mContext.startActivity(intent);
-                                                downloadManager.addCompletedDownload(m.getName(), " ", false, "application/pdf", path, file.length(), true);
-
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(ANError anError) {
-
-                                            Log.d("materialsFileCheck", anError.getMessage());
-                                        }
-                                    });
-
-                        }
+                        new SweetAlertDialog(mContext,SweetAlertDialog.ERROR_TYPE)
+                                .setContentText("Please Enroll to view the lectures")
+                                .setTitleText("Oops...")
+                                .show();
 
                     }else{
 
-                        new SweetAlertDialog(mContext,SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("Oops...")
-                                .setContentText("It seems you haven't given the permission to access the storage.\nPlease give the permission to access the materials.")
-                                .setConfirmText("OK")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                                Uri.parse("package:" + mContext.getPackageName()));
-
-                                        intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        mContext.startActivity(intent);
-                                    }
-                                })
-                                .show();
+                        itemClickListener(m);
                     }
+
                 }
             });
 
 
     }
 
-    private boolean checkPermission() {
 
-        int readExternal = ContextCompat.checkSelfPermission(mContext.getApplicationContext(), READ_EXTERNAL_STORAGE);
-        int writeExternal = ContextCompat.checkSelfPermission(mContext.getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+    void itemClickListener(Material m){
 
-        return (readExternal == PackageManager.PERMISSION_GRANTED && writeExternal == PackageManager.PERMISSION_GRANTED);
+        Intent intent = new Intent(mContext,MaterialViewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Material",m);
+        intent.putExtras(bundle);
+        intent.putExtra("TO_SHOW","MATERIAL");
+        mContext.startActivity(intent);
     }
+
 
     @Override
     public int getItemCount() {

@@ -1,200 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/loginbackground"
-    android:focusableInTouchMode="true">
+    android:background="@drawable/newbackgroundbase"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/loginFragmentlogoImageView"
-        android:layout_width="250dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="42dp"
-        android:src="@drawable/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignEnd="@+id/linearLayout5" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/newbackgroundbase"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/loginFragmentLL"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_below="@+id/loginFragmentlogoImageView"
-        android:layout_alignParentStart="true">
+        android:paddingBottom="10dp"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/loginFragmentlogoImageView"
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="42dp"
+            android:src="@drawable/logotwo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignEnd="@+id/linearLayout5" />
 
         <LinearLayout
+            android:id="@+id/loginFragmentLL"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:layout_below="@+id/loginFragmentlogoImageView"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.15"
+                    android:paddingTop="10dp"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/new_user" />
 
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0.1"
-                android:src="@drawable/emailicon" />
 
-            <!--            <EditText
-                android:id="@+id/"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1.5"
-                android:backgroundTint="@color/cardview_light_background"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/cardview_light_background"
-                android:textColorHint="@color/cardview_light_background" />-->
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                style="@style/customeditText"
-                app:colorControlActivated="@color/white"
-                android:textColor="@color/cardview_light_background"
-                android:textColorHint="@color/cardview_light_background"
-                app:backgroundTint="@color/textColor01"
-                app:hintTextAppearance="@style/Widget.Design.TextInputLayout">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/loginEmailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="true"
-                    android:foregroundTint="@color/white"
+                <!--            <EditText
+                    android:id="@+id/"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1.5"
+                    android:backgroundTint="@color/cardview_light_background"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/cardview_light_background"
-                    android:textColorHint="@color/cardview_light_background"
-                    android:textColorLink="@android:color/white"
-                    android:textCursorDrawable="@null"
-                    app:backgroundTint="@color/cardview_light_background" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColorHint="@color/cardview_light_background" />-->
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:hint="Mobile Number"
+                    style="@style/customeditText"
+                    app:colorControlActivated="@color/white"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="28dp"
+                    android:textColor="@color/newGray"
+                    android:textColorHint="@color/newGray"
+                    app:backgroundTint="@color/newGray"
+                    app:hintTextAppearance="@style/CustomDesignHint">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/loginMobileNumEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="true"
+                        android:foregroundTint="@color/newGray"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:textColor="@color/newGray"
+                        android:textColorHint="@color/newGray"
+                        android:textColorLink="@color/newGray"
+                        android:textCursorDrawable="@null"
+                        app:backgroundTint="@color/newGray" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.15"
+                    android:paddingTop="5dp"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/lock_new_va" />
+                <!--
+                <EditText
+                    android:id="@+id/loginPasswordEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1.5"
+                    />-->
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/etPasswordLayout"
+                    style="@style/customeditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:foregroundTint="@color/newGray"
+                    android:textColor="@color/newGray"
+                    android:textColorHint="@color/newGray"
+                    app:backgroundTint="@color/newGray"
+                    app:colorControlActivated="@color/newGray"
+                    app:hintTextAppearance="@style/CustomDesignHint"
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="28dp"
+                    app:passwordToggleTint="@color/newGray"
+                    app:passwordToggleTintMode="src_atop">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/loginPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="true"
+                        android:hint="Password"
+                        android:inputType="textVisiblePassword"
+                        android:textColor="@color/newGray"
+                        android:textColorHint="@color/newGray"
+                        android:textColorLink="@color/newGray"
+                        android:textCursorDrawable="@null"
+                        app:backgroundTint="@color/newGray" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="300dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="30dp"
+                android:textStyle="bold"
+                android:layout_weight="0.5"
+                android:background="@drawable/new_login_button"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/cardview_light_background" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loginForgotPasswordTextView"
+                android:text="Forgot Password ?"
+                android:padding="10dp"
+                android:layout_marginTop="18dp"
+                android:textColor="@color/newGray"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="0.1"
-                android:paddingTop="5dp"
-                android:src="@drawable/lockicon" />
-
-            <!--
-            <EditText
-                android:id="@+id/loginPasswordEditText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1.5"
-                />-->
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/etPasswordLayout"
-                style="@style/customeditText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:foregroundTint="@color/white"
-                android:textColor="@color/cardview_light_background"
-                android:textColorHint="@color/cardview_light_background"
-                app:backgroundTint="@color/textColor01"
-                app:colorControlActivated="@color/white"
-                app:hintTextAppearance="@style/Widget.Design.TextInputLayout"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/white"
-                app:passwordToggleTintMode="src_atop">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/loginPasswordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="true"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/cardview_light_background"
-                    android:textColorHint="@color/cardview_light_background"
-                    android:textColorLink="@android:color/white"
-                    android:textCursorDrawable="@null"
-                    app:backgroundTint="@color/cardview_light_background" />
-            </android.support.design.widget.TextInputLayout>
-
-
-        </LinearLayout>
-        <!--        <TextView
+            android:id="@+id/linearLayout5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/loginForgotPasswordTextView"
-            android:text="Forgot Password?"
-            android:layout_gravity="right"
-            android:layout_marginBottom="15dp"/>-->
+            android:layout_below="@+id/loginFragmentLL"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Don’t have an account?"
+                android:textAlignment="textEnd"
+                android:textColor="@color/newGray" />
+
+            <Button
+                android:id="@+id/loginSingupButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:background="@android:color/transparent"
+                android:paddingStart="5dp"
+                android:text="Sign Up"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/backgroundBlue"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
 
 
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="300dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="30dp"
-            android:textStyle="bold"
-            android:layout_weight="0.5"
-            android:background="@drawable/login_button"
-            android:text="Let’s start learning"
-            android:textAllCaps="false"
-            android:textColor="@color/cardview_light_background" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
+    <include layout="@layout/progressbar_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="Don’t have an account?"
-            android:textAlignment="textEnd"
-            android:textColor="@color/cardview_light_background" />
-
-        <Button
-            android:id="@+id/loginSingupButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:background="@android:color/transparent"
-            android:paddingStart="5dp"
-            android:text="Sign Up"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
+        android:layout_centerInParent="true" />
 </RelativeLayout>

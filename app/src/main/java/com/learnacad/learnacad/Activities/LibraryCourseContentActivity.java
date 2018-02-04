@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Adapters.LibraryCourseContentViewPagerAdapter;
 import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.Models.LectureListMapping;
@@ -58,6 +59,18 @@ import static com.orm.SugarRecord.listAll;
 
 public class LibraryCourseContentActivity extends AppCompatActivity {
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
+    }
+
     private ViewPager viewPager;
     private TabLayout tabLayout;
     ArrayList<Lecture> lectures;
@@ -83,7 +96,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
         if(!isConnected()){
 
                 new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
-                        .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                        .setContentText("Connection Error!\nPlease try again later.")
                         .setTitleText("Oops..!!")
                         .show();
             return;
@@ -265,7 +278,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
                                         progressBar.setVisibility(View.GONE);
                                     } catch (JSONException e) {
                                         new SweetAlertDialog(LibraryCourseContentActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                .setContentText("There seems a problem with us.\nPlease try again later.")
+                                                .setContentText("There seems a problem with us.\nPlease try again later.(101LC_EN)")
                                                 .setTitleText("Oops..!!")
                                                 .show();
                                     }
@@ -277,7 +290,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
                                 public void onError(ANError anError) {
 
                                     new SweetAlertDialog(LibraryCourseContentActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                            .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                            .setContentText("Connection Error!\nPlease try again later.(202LC_EN)")
                                             .setTitleText("Oops..!!")
                                             .show();
                                     progressBar.setVisibility(View.GONE);
@@ -458,7 +471,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
                             checkData();
                         } catch (JSONException e) {
                             new SweetAlertDialog(LibraryCourseContentActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_MI)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -469,7 +482,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(LibraryCourseContentActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_MI)")
                                 .setTitleText("Oops..!!")
                                 .show();
 

@@ -93,7 +93,7 @@ public class LCCLecturesFragment extends Fragment {
 
         } catch (JSONException e) {
             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_LF_CE)")
                     .setTitleText("Oops..!!")
                     .show();
         }
@@ -149,7 +149,7 @@ public class LCCLecturesFragment extends Fragment {
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_LF_MI)")
                                     .setTitleText("Oops..!!")
                                     .show();
                             progressBar.setVisibility(View.GONE);
@@ -161,7 +161,7 @@ public class LCCLecturesFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_LF_MI)")
                                 .setTitleText("Oops..!!")
                                 .show();
                         progressBar.setVisibility(View.GONE);

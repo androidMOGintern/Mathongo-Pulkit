@@ -4,29 +4,7 @@
             "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/sweetalertlib/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/71e1c408e9e9faa7ddf616eb8cc16925/res/values-land/values.xml",
-                    "from": {
-                        "startLines": "3,4,6,7,8,9,10",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "56,118,191,261,331,395,466",
-                        "endColumns": "61,71,69,69,63,70,67",
-                        "endOffsets": "113,185,256,326,390,461,529"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,117,189,259,329,393,464",
-                        "endColumns": "61,71,69,69,63,70,67",
-                        "endOffsets": "112,184,254,324,388,459,527"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\AndroidStudioProjects\\LearnAcad\\sweetalertlib\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
-            "map": [
-                {
-                    "source": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-21.0.0.aar\\9b7d7b3381bbb3d815c98b25879593a1\\res\\values-land\\values.xml",
+                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/6a727cc2b750800cb366d4f63bad879a/res/values-land/values.xml",
                     "from": {
                         "startLines": "3,4,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4",

@@ -24,6 +24,11 @@
         android:icon="@drawable/mybookmarksicon"
         android:id="@+id/mybookmarksNavigationDrawer"/>
 
+    <item
+        android:title="Resources"
+        android:icon="@drawable/new_resources_icon"
+        android:id="@+id/resourcesNavigationDrawer"/>
+
 
     <!--<item-->
         <!--android:title="Teachers"-->

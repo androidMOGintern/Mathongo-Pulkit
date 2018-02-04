@@ -71,4 +71,9 @@
         <item name="android:textColor">@color/textColor01</item>
     </style>
 
+    <style name="CustomDesignHint" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/newGray</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

@@ -43,14 +43,14 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/attachedLayoutDescriptionTextView">
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/attachedUpvotesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/upvoteicon"
+                android:drawableTop="@drawable/new_upvote_layer_list_drawable"
                 android:text="5K Upvotes"
                 android:textColor="@color/colorGray"
                 android:textSize="10sp" />
@@ -77,7 +77,7 @@
                 <!--android:textColor="@color/colorGray"-->
                 <!--android:textSize="10sp" />-->
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/attachedUReportButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 android:layout_alignTop="@+id/attachedUpvotesButton"
                 android:layout_toEndOf="@+id/attachedUpvotesButton"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/reporticon"
+                android:drawableTop="@drawable/new_report_layer_list_drawable"
                 android:text="Report Error"
                 android:textColor="@color/colorGray"
                 android:textSize="10sp" />

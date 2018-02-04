@@ -3,10 +3,15 @@ package com.learnacad.learnacad.Fragments;
 import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +37,13 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.BaseActivity;
 import com.learnacad.learnacad.Adapters.ChipsViewAdapeter;
 import com.learnacad.learnacad.Adapters.LibraryCourseListAdapter;
+import com.learnacad.learnacad.BuildConfig;
+import com.learnacad.learnacad.Fragments.Resources_Fragments.ResourcesBaseFragment;
 import com.learnacad.learnacad.Models.CONSTANTS;
 import com.learnacad.learnacad.Models.Filter;
 import com.learnacad.learnacad.Models.FiltersViewModel;
@@ -43,6 +53,7 @@ import com.learnacad.learnacad.Models.Tutor;
 import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.R;
 import com.orm.SugarRecord;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,16 +62,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.orm.SugarRecord.deleteAll;
 import static com.orm.SugarRecord.listAll;
+import static java.lang.Boolean.TRUE;
 
 /**
  * Created by Sahil Malhotra on 19-06-2017.
  */
 
-public class LibraryCourseListFragment extends Fragment implements ChipsViewAdapeter.onChipDeleted{
+public class LibraryCourseListFragment extends Fragment implements ChipsViewAdapeter.onChipDeleted, AppBarLayout.OnOffsetChangedListener {
 
     RecyclerView recyclerView;
     LibraryCourseListAdapter listAdapter;
@@ -74,10 +87,16 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     RecyclerView chipRecyclerView;
     Filter f;
     Bundle b;
+    Context mContext;
     SearchView searchView;
     FiltersViewModel mViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
+    AppBarLayout appBarLayout;
+    ImageView imageViewHeader;
+    String version;
+
+    public static boolean ISVISIBLE;
 
     @Nullable
     @Override
@@ -93,6 +112,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
             }
         }
 
+        ISVISIBLE = true;
 
         try {
 
@@ -101,8 +121,12 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
         }
 
+
         setHasOptionsMenu(true);
         mViewModel = ViewModelProviders.of(getActivity()).get(FiltersViewModel.class);
+
+
+        appBarLayout = view.findViewById(R.id.BaseActivityAppBarLayout);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.LibraryCourseListRecyclerView);
         minicoursesList = new ArrayList<>();
@@ -127,6 +151,8 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
         chipsViewAdapeter = new ChipsViewAdapeter(getActivity(),chipsTitles,chipsCardView,this);
         chipRecyclerView.setAdapter(chipsViewAdapeter);
 
+        imageViewHeader = view.findViewById(R.id.headerImageView);
+
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -148,6 +174,20 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
         setData(b);
 
         return view;
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appBarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appBarLayout.removeOnOffsetChangedListener(this);
     }
 
     private void setData(Bundle b) {
@@ -239,6 +279,9 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
 
 
+
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
@@ -250,6 +293,8 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
                 minicoursesList.clear();
                 tutors.clear();
+
+                listAdapter.notifyDataSetChanged();
 
                 if(chipsCardView.getVisibility() == View.VISIBLE) {
 
@@ -264,7 +309,21 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
             }
         });
 
+        imageViewHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FlurryAgent.logEvent("Resources_Banner_Clicked");
+
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, new ResourcesBaseFragment());
+                fragmentTransaction.addToBackStack(null).commit();
+            }
+        });
+
     }
+
 
     private void fetchData() {
 
@@ -286,9 +345,16 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
                         try {
 
-                            for(int i = response.length() - 1; i >= 0; --i){
+                            for(int i = 0; i < response.length(); ++i){
 
                                 JSONObject object = response.getJSONObject(i);
+
+                                String isActive = object.getString("isActive");
+
+                                if(!isActive.contentEquals("true")){
+
+                                    continue;
+                                }
 
                                 int minicourse_id = object.getInt("id");
                                 String minicourse_name = object.getString("name");
@@ -339,7 +405,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
 
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LCL_MI)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -353,7 +419,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LCL_MI)")
                                 .setTitleText("Oops..!!")
                                 .show();
                         progressBar.setVisibility(View.GONE);
@@ -422,9 +488,17 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
                             }
-                            for(int i = response.length() - 1; i >= 0; --i){
+                            for(int i = 0; i < response.length(); ++i){
 
                                 JSONObject object = response.getJSONObject(i);
+
+                                String isActive = object.getString("isActive");
+
+
+                                if(!isActive.contentEquals("true")){
+
+                                    continue;
+                                }
 
                                 Log.d("toing",object.toString());
 
@@ -479,7 +553,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LCL_MIF)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -494,7 +568,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LCL_MIF)")
                                 .setTitleText("Oops..!!")
                                 .show();
 
@@ -627,7 +701,13 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
         deleteAll(Tutor.class);
         Log.d("sqlcheckto", "on Destroy View called");
         deleteAll(Minicourse.class);
+        ISVISIBLE = false;
     }
 
 
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+        swipeRefreshLayout.setEnabled( verticalOffset == 0);
+    }
 }

@@ -16,6 +16,7 @@ import android.widget.Filterable;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.LibraryCourseContentActivity;
 import com.learnacad.learnacad.Models.Minicourse;
 import com.learnacad.learnacad.Models.Tutor;
@@ -99,12 +100,14 @@ public class LibraryCourseListAdapter extends RecyclerView.Adapter<LibraryCourse
         }
 
 
-        Tutor t = tutors.get(position);
+        if(tutors.size() > 0) {
 
-        if(t.getImgUrl() == null || t.getImgUrl().length() == 0 || t.getImgUrl().isEmpty()){
+            Tutor t = tutors.get(position);
 
-            holder.circleImageView.setImageResource(R.drawable.teachersicon);
-        }else {
+            if (t.getImgUrl() == null || t.getImgUrl().length() == 0 || t.getImgUrl().isEmpty()) {
+
+                holder.circleImageView.setImageResource(R.drawable.teachersicon);
+            } else {
 
 //
 //            Picasso.Builder builder = new Picasso.Builder(mContext);
@@ -116,13 +119,14 @@ public class LibraryCourseListAdapter extends RecyclerView.Adapter<LibraryCourse
 //                }
 //            });
 
-            StringBuilder builder1 = new StringBuilder();
-            builder1.append(Api_Urls.BASE_URL);
-            builder1.append("images/")
-                    .append(minicourse.getTutorImageUrl())
-                    .append(".jpg");
+                StringBuilder builder1 = new StringBuilder();
+                builder1.append(Api_Urls.BASE_URL);
+                builder1.append("images/")
+                        .append(minicourse.getTutorImageUrl())
+                        .append(".jpg");
 
-            Picasso.with(mContext).load(builder1.toString()).error(R.drawable.teachersicon).into(holder.circleImageView);
+                Picasso.with(mContext).load(builder1.toString()).error(R.drawable.teachersicon).into(holder.circleImageView);
+            }
         }
 /*
         if(minicourse.getEnrolled()){
@@ -136,6 +140,8 @@ public class LibraryCourseListAdapter extends RecyclerView.Adapter<LibraryCourse
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FlurryAgent.logEvent("Course_" + minicourse.getName() + "_Clicked");
 
                 Intent intent = new Intent(mContext,LibraryCourseContentActivity.class);
                 String pid = String.valueOf(minicourse.getCourse_id()) + String.valueOf(tutors.get(position).getTutor_id());

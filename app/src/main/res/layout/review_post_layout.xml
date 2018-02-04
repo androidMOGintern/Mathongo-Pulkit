@@ -27,7 +27,7 @@
         android:clickable="true"
         android:numStars="5"
         android:progressTint="@color/Ratingbar"
-        android:rating="0"
+        android:rating="5"
         android:stepSize="0.5" />
 
     <EditText

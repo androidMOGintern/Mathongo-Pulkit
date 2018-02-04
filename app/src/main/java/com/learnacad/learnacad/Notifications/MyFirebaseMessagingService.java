@@ -34,13 +34,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return;
         }
 
-//        Map<String, String> data = remoteMessage.getData();
-//        String myCustomKey = data.get("Clickable");
-//        Log.d("firebaseNotification",myCustomKey);
-
-//        Notifications notifications = new Notifications("title",myCustomKey);
-
-  //      SugarRecord.save(notifications);
 
         Log.d("firebaseNotification","From: - "+remoteMessage.getFrom());
 

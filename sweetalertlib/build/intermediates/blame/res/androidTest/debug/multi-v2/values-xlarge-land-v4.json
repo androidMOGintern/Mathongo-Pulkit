@@ -4,29 +4,7 @@
             "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/sweetalertlib/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-xlarge-land-v4/values-xlarge-land-v4.xml",
             "map": [
                 {
-                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/71e1c408e9e9faa7ddf616eb8cc16925/res/values-xlarge-land/values.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "56",
-                        "endColumns": "63",
-                        "endOffsets": "115"
-                    },
-                    "to": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "63",
-                        "endOffsets": "114"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\AndroidStudioProjects\\LearnAcad\\sweetalertlib\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-xlarge-land-v4\\values-xlarge-land-v4.xml",
-            "map": [
-                {
-                    "source": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-21.0.0.aar\\9b7d7b3381bbb3d815c98b25879593a1\\res\\values-xlarge-land\\values.xml",
+                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/6a727cc2b750800cb366d4f63bad879a/res/values-xlarge-land/values.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",

@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
+    android:orientation="vertical"
     tools:context="com.learnacad.learnacad.Activities.MaterialViewActivity">
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/content_share"
+        android:layout_height="wrap_content">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            class="com.learnacad.learnacad.Fragments.Sharing_Fragment"
+            android:id="@+id/sharingFragment"/>
+    </FrameLayout>
 
-    <es.voghdev.pdfviewpager.library.PDFViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pdfViewPager"/>
+    <include layout="@layout/progressbar_layout" />
 
-</RelativeLayout>
+
+</LinearLayout>

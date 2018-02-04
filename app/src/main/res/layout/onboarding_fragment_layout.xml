@@ -21,7 +21,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Let's Get Started"
         android:textColor="@color/white"
         android:id="@+id/onboardingFragmentLayoutSloginButton"
         android:layout_alignParentBottom="true"

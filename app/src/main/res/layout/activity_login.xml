@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:ProgressPicture="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_login"
+    android:background="@drawable/loginbackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

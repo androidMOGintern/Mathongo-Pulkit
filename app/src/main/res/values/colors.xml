@@ -16,6 +16,8 @@
     <color name="navbarItemColor">#8897a7</color>
     <color name="white">#ffffff</color>
     <color name="grayish">#a8b7c7</color>
+    <color name="newBackgroundColor">#fbfbfb</color>
+    <color name="newGray">#6885a5</color>
     </resources>
 
 

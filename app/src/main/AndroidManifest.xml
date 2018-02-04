@@ -7,9 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
 
     <application
-        android:name="com.orm.SugarApp"
+        android:name=".FlurryAnalytics"
         android:allowBackup="true"
         android:icon="@mipmap/icon_launcher"
         android:label="@string/app_name"
@@ -22,7 +25,7 @@
             android:value="LearnAcad.db" />
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="3" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -58,11 +61,6 @@
             android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.LibraryCourseContentActivity"
@@ -80,7 +78,20 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Activities.MaterialViewActivity"></activity>
+        <activity android:name=".Activities.MaterialViewActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="e416888a5c768ab6a8096ce3eea1f1f0c6f116ba" />
+
+        <activity android:name=".Activities.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

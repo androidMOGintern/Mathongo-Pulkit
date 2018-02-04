@@ -19,6 +19,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.learnacad.learnacad.Adapters.LCCMatereialsAdapeter;
 import com.learnacad.learnacad.Models.Material;
+import com.learnacad.learnacad.Models.MyCoursesEnrolled;
 import com.learnacad.learnacad.Models.SessionManager;
 import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.R;
@@ -28,6 +29,8 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -46,6 +49,7 @@ public class LCCMaterialsFragment extends Fragment {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     NestedScrollView noMaterialsView;
+    boolean isEnrolled;
     public static final int PERMISSION_REQUEST_CODE = 200;
     int courseid;
 
@@ -55,18 +59,24 @@ public class LCCMaterialsFragment extends Fragment {
         view = inflater.inflate(R.layout.lccmaterials_fragment_layout,container,false);
         recyclerView = view.findViewById(R.id.lccmaterials_recyclerView);
         noMaterialsView = view.findViewById(R.id.noMaterialView);
+        courseid = getActivity().getIntent().getIntExtra("MINICOURSE_ID", 0);
         materials = new ArrayList<>();
-        lccMatereialsAdapeter = new LCCMatereialsAdapeter(getActivity(),materials,this);
+        isEnrolled = checkEnrolled();
+
+        if(!checkPermission()){
+
+            requestPermission();
+        }
+
+        lccMatereialsAdapeter = new LCCMatereialsAdapeter(getActivity(),materials,this,isEnrolled);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(lccMatereialsAdapeter);
 
         progressBar = view.findViewById(R.id.pb);
         progressBar.setIndeterminate(true);
 
-        if(!checkPermission()){
 
-            requestPermission();
-        }
+
 
         fetchData();
 
@@ -86,11 +96,43 @@ public class LCCMaterialsFragment extends Fragment {
         return (readExternal == PackageManager.PERMISSION_GRANTED && writeExternal == PackageManager.PERMISSION_GRANTED);
     }
 
+    private boolean checkEnrolled() {
+
+        List<MyCoursesEnrolled> enrolledList = listAll(MyCoursesEnrolled.class);
+
+        String toParseCoursesString = "[]";
+
+        if(enrolledList != null && enrolledList.size() > 0){
+
+            toParseCoursesString = enrolledList.get(enrolledList.size() - 1).getMycourses();
+
+        }
+        try {
+            JSONArray array= new JSONArray(toParseCoursesString);
+            for(int i = 0; i < array.length(); ++i){
+
+                int id = array.getInt(i);
+                if(id == courseid){
+
+                    return true;
+                }
+            }
+
+        } catch (JSONException e) {
+            new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_MF_CE)")
+                    .setTitleText("Oops..!!")
+                    .show();
+        }
+
+        return false;
+
+    }
+
 
 
     private void fetchData() {
 
-        courseid = getActivity().getIntent().getIntExtra("MINICOURSE_ID", 0);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -112,6 +154,7 @@ public class LCCMaterialsFragment extends Fragment {
 
                             noMaterialsView.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
 
                         }else {
 
@@ -127,6 +170,11 @@ public class LCCMaterialsFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
+                            }
+
+                            if(isEnrolled){
+
+                                lccMatereialsAdapeter.isEnrolledChanged();
                             }
 
                             lccMatereialsAdapeter.notifyDataSetChanged();

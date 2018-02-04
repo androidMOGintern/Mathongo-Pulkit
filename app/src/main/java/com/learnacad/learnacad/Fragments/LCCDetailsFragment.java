@@ -150,7 +150,7 @@ public class LCCDetailsFragment extends Fragment {
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_DF_MI)")
                                     .setTitleText("Oops..!!")
                                     .show();
 
@@ -164,7 +164,7 @@ public class LCCDetailsFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_DF_MI)")
                                 .setTitleText("Oops..!!")
                                 .show();
 

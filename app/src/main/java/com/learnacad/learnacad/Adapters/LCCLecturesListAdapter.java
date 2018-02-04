@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.LecturePlayerActivity;
 import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.Models.Tutor;
@@ -68,6 +69,7 @@ public class LCCLecturesListAdapter extends RecyclerView.Adapter<LCCLecturesList
             @Override
             public void onClick(View view) {
 
+                FlurryAgent.logEvent("Lesson_" + lessons.get(position).getName() + "_Clicked");
 
                 if(!enrolled){
 
@@ -76,6 +78,8 @@ public class LCCLecturesListAdapter extends RecyclerView.Adapter<LCCLecturesList
                                 .setTitleText("Oops...")
                                 .show();
                 }else {
+
+
 
 //                mContext.startActivity(new Intent(mContext, LecturePlayerActivity.class));
                     Intent intent = new Intent(mContext, LecturePlayerActivity.class);
@@ -91,6 +95,9 @@ public class LCCLecturesListAdapter extends RecyclerView.Adapter<LCCLecturesList
         holder.playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FlurryAgent.logEvent("Lesson_" + lessons.get(position).getName() + "_Clicked");
+
 
                 if(!enrolled){
 

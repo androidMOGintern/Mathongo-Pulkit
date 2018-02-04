@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "861281119123-1nnfndp51d5hmb968shr27aaupdgit9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.learnacad.learnacad",
+            "certificate_hash": "6689ae825e4361edea22475f50cc6b5c9bfa48e2"
+          }
+        },
+        {
+          "client_id": "861281119123-gj7d0sknuanl920ersga7lt1d727g756.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.learnacad.learnacad",
+            "certificate_hash": "6354a2136e3171f4a97d9de00642bc430eaa8e76"
+          }
+        },
+        {
           "client_id": "861281119123-4oja2f9p8kjq10ofiad3qe6qh42hp3hu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

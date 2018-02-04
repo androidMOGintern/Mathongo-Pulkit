@@ -80,7 +80,7 @@ public class MyCourses_Fragment extends Fragment {
         if(!isConnected()){
 
             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                    .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
 
@@ -143,6 +143,13 @@ public class MyCourses_Fragment extends Fragment {
 
                                         JSONObject object = outerObject.getJSONObject("minicourse");
 
+                                        String isActive = object.getString("isActive");
+
+                                        if(!isActive.contentEquals("true")){
+
+                                            continue;
+                                        }
+
 
                                         int minicourse_id = object.getInt("id");
                                         String minicourse_name = object.getString("name");
@@ -202,7 +209,7 @@ public class MyCourses_Fragment extends Fragment {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.")
                                 .setTitleText("Oops..!!")
                                 .show();
                         progressBar.setVisibility(View.GONE);

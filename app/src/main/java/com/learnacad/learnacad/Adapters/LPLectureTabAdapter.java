@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.LecturePlayerActivity;
 import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.R;
@@ -54,6 +55,8 @@ public class LPLectureTabAdapter extends RecyclerView.Adapter<LPLectureTabAdapte
             public void onClick(View v) {
 
                 selectedPos = position;
+                FlurryAgent.logEvent("Lesson_" + lectures.get(position).getName() + "_Clicked");
+
                 notifyDataSetChanged();
 
                 if(mContext instanceof LecturePlayerActivity){
@@ -71,6 +74,8 @@ public class LPLectureTabAdapter extends RecyclerView.Adapter<LPLectureTabAdapte
             public void onClick(View view) {
 
                 selectedPos = position;
+                FlurryAgent.logEvent("Lesson_" + lectures.get(position).getName() + "_Clicked");
+
                 notifyDataSetChanged();
 
                 if(mContext instanceof LecturePlayerActivity){

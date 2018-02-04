@@ -16,6 +16,25 @@ public class Student {
     private String password;
     private String mobileNum;
     int studentId;
+    private String usedReferalCode = "NONE";
+
+    public String getUsedReferalCode() {
+        return usedReferalCode;
+    }
+
+    public void setUsedReferalCode(String usedReferalCode) {
+        this.usedReferalCode = usedReferalCode;
+    }
+
+    private String myReferalCode;
+
+    public String getMyReferalCode() {
+        return myReferalCode;
+    }
+
+    public void setMyReferalCode(String myReferalCode) {
+        this.myReferalCode = myReferalCode;
+    }
 
     public Student(String name, int studentId) {
         this.name = name;

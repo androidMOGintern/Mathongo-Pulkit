@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.InflateException;
@@ -241,13 +242,19 @@ public class Register_Fragment extends Fragment {
 
                 Student student = new Student(name,email,password,mobileNum,classChosen,pincode);
                 SugarRecord.save(student);
-                nameEditText.setText("");
-                emailEditText.setText("");
-                passwordEditText.setText("");
-                mobileNumEditText.setText("");
-                pincodeEditText.setText("");
+
 
                 if(isConnected()){
+
+
+                    SweetAlertDialog dialog = new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Warning")
+                            .setContentText("Please verify the mobile number that you have entered, we will be sending an OTP for mobile verification.\n" + mobileNum)
+                            .setConfirmText("Send OTP")
+                            .setCancelText("Edit");
+                    Button cancelButton = dialog.findViewById(R.id.cancel_button);
+
+                    cancelButton.setBackgroundColor(Color.parseColor("#000000"));
 
                     registerUser(name,email,password,mobileNum,pincode,classChosen);
 
@@ -295,16 +302,23 @@ public class Register_Fragment extends Fragment {
                             String success = response.getString("success");
                             if (success.contentEquals("true")){
 
+//
+//                                new SweetAlertDialog(getActivity(),SweetAlertDialog.SUCCESS_TYPE)
+//                                        .setTitleText("Registered Successfully!")
+//                                        .setContentText("You have registered successfully.\nPlease login to your account.")
+//                                        .show();
+//
+//                                        replaceFragment();
 
 
-                                new SweetAlertDialog(getActivity(),SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Registered Successfully!")
-                                        .setContentText("You have registered successfully.\nPlease login to your account.")
-                                        .show();
 
-                                        replaceFragment();
+                            }else if(success.contentEquals("duplicate")){
 
 
+                                    new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                                            .setTitleText("Oops...")
+                                            .setContentText("It seems the mobile number you have entered is already registered.\nPlease use a different mobile number.")
+                                            .show();
 
                             }else{
 
@@ -332,7 +346,7 @@ public class Register_Fragment extends Fragment {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.")
                                 .setTitleText("Oops..!!")
                                 .show();
 
@@ -344,7 +358,7 @@ public class Register_Fragment extends Fragment {
     void replaceFragment(){
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.enter,R.anim.exit);
+
         fragmentTransaction.replace(R.id.content_login_frame,new Login_Fragment());
         fragmentTransaction.commit();
 

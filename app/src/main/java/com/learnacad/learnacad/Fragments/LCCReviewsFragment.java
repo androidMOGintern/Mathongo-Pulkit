@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Adapters.ReviewsListViewAdapter;
 import com.learnacad.learnacad.Models.MyCoursesEnrolled;
 import com.learnacad.learnacad.Models.Reviews;
@@ -74,7 +75,7 @@ public class LCCReviewsFragment extends Fragment {
     ArrayList<Reviews> toSendreviewsArrayList;
     RelativeLayout emptyStateLayout;
     NestedScrollView nestedScrollView;
-    boolean isReviewed,isEnrolled;
+    boolean isReviewed,isEnrolled = false;
     LinearLayout linearLayout;
 
 
@@ -116,13 +117,14 @@ public class LCCReviewsFragment extends Fragment {
 
             rateAndreviewButton.setText("Rate and Review");
             rateAndReviewButtonEmptystate.setText("Rate and Review");
+            checkReviewed();
+
 
         }else{
 
             isEnrolled = false;
         }
 
-        checkReviewed();
         loadMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -264,7 +266,7 @@ public class LCCReviewsFragment extends Fragment {
 
         } catch (JSONException e) {
             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_RF_CE)")
                     .setTitleText("Oops..!!")
                     .show();
         }
@@ -275,6 +277,9 @@ public class LCCReviewsFragment extends Fragment {
 
 
     public void rateAndreviewClick(){
+
+        FlurryAgent.logEvent("Course_"+ course_id + "_Reviewed");
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflator = getActivity().getLayoutInflater();
@@ -298,7 +303,7 @@ public class LCCReviewsFragment extends Fragment {
                 if(!isConnected()){
 
                     new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                            .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                            .setContentText("Connection Error!\nPlease try again later.")
                             .setTitleText("Oops..!!")
                             .show();
                     return;
@@ -308,6 +313,9 @@ public class LCCReviewsFragment extends Fragment {
 
                 ratings = ratingBar.getRating();
 
+                if(ratings == 0){
+                     ratings = 1;
+                }
 
                 List<SessionManager> sessionManagers = listAll(SessionManager.class);
 
@@ -343,8 +351,11 @@ public class LCCReviewsFragment extends Fragment {
                                     }
 
                                 } catch (JSONException e) {
+
+                                    progressBar.setVisibility(View.GONE);
+
                                     new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                            .setContentText("There seems a problem with us.\nPlease try again later.")
+                                            .setContentText("There seems a problem with us.\nPlease try again later.(101LC_RF_RP)")
                                             .setTitleText("Oops..!!")
                                             .show();
                                 }
@@ -360,7 +371,7 @@ public class LCCReviewsFragment extends Fragment {
                             @Override
                             public void onError(ANError anError) {
                                 new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                        .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                        .setContentText("Connection Error!\nPlease try again later.(202LC_RF_RP)")
                                         .setTitleText("Oops..!!")
                                         .show();
                                 progressBar.setVisibility(View.GONE);
@@ -400,7 +411,7 @@ public class LCCReviewsFragment extends Fragment {
 
                         } catch (JSONException e) {
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_RF_UD)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -411,7 +422,7 @@ public class LCCReviewsFragment extends Fragment {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later. - 4\n" + anError.getLocalizedMessage())
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_RF_UD)")
                                 .setTitleText("Oops..!!")
                                 .show();
 
@@ -456,7 +467,7 @@ public class LCCReviewsFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get(Api_Urls.BASE_URL + "api/minicourses/" + course_id)
-                .addHeaders("Authorization","Bearer " + sessionManagers.get(0).getToken())
+                .addHeaders("Authorization","bearer " + sessionManagers.get(0).getToken())
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -490,10 +501,8 @@ public class LCCReviewsFragment extends Fragment {
                                 }
                             }
                         } catch (JSONException e) {
-                            new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
-                                    .setTitleText("Oops..!!")
-                                    .show();
+
+
                         }
 
                         progressBar.setVisibility(View.GONE);
@@ -511,7 +520,7 @@ public class LCCReviewsFragment extends Fragment {
                         Log.d("0p0p",anError.getLocalizedMessage());
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later. - 5\n" + anError.getLocalizedMessage())
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_RF_LD)\n")
                                 .setTitleText("Oops..!!")
                                 .show();
 
@@ -597,7 +606,7 @@ public class LCCReviewsFragment extends Fragment {
                         } catch (JSONException e) {
 
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_RF_CR)")
                                     .setTitleText("Oops..!!")
                                     .show();
                         }
@@ -607,7 +616,7 @@ public class LCCReviewsFragment extends Fragment {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_RF_CR)")
                                 .setTitleText("Oops..!!")
                                 .show();
 

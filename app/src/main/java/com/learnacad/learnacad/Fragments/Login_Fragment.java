@@ -1,5 +1,6 @@
 package com.learnacad.learnacad.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.BaseActivity;
 import com.learnacad.learnacad.Models.SessionManager;
 import com.learnacad.learnacad.Models.Student;
@@ -32,9 +36,12 @@ import com.orm.SugarRecord;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.learnacad.learnacad.Fragments.Register_Fragment.isValidEmail;
+import static com.orm.SugarRecord.listAll;
 
 /**
  * Created by Sahil Malhotra on 13-06-2017.
@@ -43,8 +50,13 @@ import static com.learnacad.learnacad.Fragments.Register_Fragment.isValidEmail;
 public class Login_Fragment extends Fragment {
 
     public static View view;
-    String email,password;
+    String mobileNum,password;
     Snackbar snackbar;
+    String toSendBodyParam,myReferalCode,toNotSendParam;
+    ProgressDialog pd;
+    Student student;
+    TextView textView_Forgotpass;
+    Context mContext;
 
     @Nullable
     @Override
@@ -70,24 +82,42 @@ public class Login_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        final TextInputEditText emailEditText = (TextInputEditText) view.findViewById(R.id.loginEmailEditText);
+        final TextInputEditText mobileNumEditText = (TextInputEditText) view.findViewById(R.id.loginMobileNumEditText);
         final TextInputEditText passwordEditText = (TextInputEditText) view.findViewById(R.id.loginPasswordEditText);
         Button signUp = (Button) view.findViewById(R.id.loginSingupButton);
         Typeface typefaceMedium = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Medium.ttf");
         Typeface typefaceRegular = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Regular.ttf");
-        emailEditText.setTypeface(typefaceRegular);
+        mobileNumEditText.setTypeface(typefaceRegular);
         signUp.setTypeface(typefaceMedium);
         passwordEditText.setTypeface(typefaceRegular);
 
+        textView_Forgotpass = view.findViewById(R.id.loginForgotPasswordTextView);
+
+        textView_Forgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FlurryAgent.logEvent("Forgot_Password_Clicked");
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+                fragmentTransaction.replace(R.id.content_login_frame,new Forgot_Password_Mobile());
+                fragmentTransaction.commit();
+            }
+        });
+
+        mContext = getActivity();
+
         snackbar = Snackbar.make(view,null,Snackbar.LENGTH_INDEFINITE);
+
+
+        pd = new ProgressDialog(getContext());
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                // fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.fade_out);
-                fragmentTransaction.setCustomAnimations(R.anim.enter,R.anim.exit);
-                fragmentTransaction.replace(R.id.content_login_frame,new Register_Fragment());
+
+                fragmentTransaction.replace(R.id.content_login_frame,new SignUp_Step1_Fragment());
                 fragmentTransaction.commit();
             }
         });
@@ -97,66 +127,66 @@ public class Login_Fragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                email = emailEditText.getText().toString().trim();
+                mobileNum = mobileNumEditText.getText().toString().trim();
                 password = passwordEditText.getText().toString().trim();
+
+                if (mobileNum.isEmpty()) {
+
+
+                    mobileNumEditText.setError("Please enter your Mobile Number to continue.");
+                    return;
+                }
 
 
                 if (password.isEmpty()) {
 
-                    snackbar.dismiss();
-                    Snackbar snackbar1 = Snackbar.make(view,"Enter Password",Snackbar.LENGTH_LONG);
-                    View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
-                    view1.setPadding(0,0,0,0);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
-                    textView.setCompoundDrawablePadding(8);
-                    snackbar1.show();
-                    return;
-                }
 
-                if (email.isEmpty()) {
-
-
-                    snackbar.dismiss();
-                    Snackbar snackbar1 = Snackbar.make(view,"Enter email.",Snackbar.LENGTH_LONG);
-                    View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
-                    view1.setPadding(0,0,0,0);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
-                    textView.setCompoundDrawablePadding(8);
-                    snackbar1.show();
+                     passwordEditText.setError("Please enter your Password to continue.");
+//                    snackbar.dismiss();
+//                    Snackbar snackbar1 = Snackbar.make(view,"Enter Password",Snackbar.LENGTH_LONG);
+//                    View view1 = snackbar1.getView();
+//                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+//                    view1.setPadding(0,0,0,0);
+//                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
+//                    textView.setCompoundDrawablePadding(8);
+//                    snackbar1.show();
                     return;
                 }
 
 
-                if (!isValidEmail(email)) {
 
-                    snackbar.dismiss();
-                    Snackbar snackbar1 = Snackbar.make(view,"Enter a valid email address.",Snackbar.LENGTH_LONG);
-                    View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
-                    view1.setPadding(0,0,0,0);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
-                    textView.setCompoundDrawablePadding(8);
-                    snackbar1.show();
-                    return;
-                }
+
+                    if (mobileNum.length() != 10 || (!TextUtils.isDigitsOnly(mobileNum))) {
+
+
+                        mobileNumEditText.setError("Please enter a valid mobile number.");
+
+//                        snackbar.dismiss();
+//                        Snackbar snackbar1 = Snackbar.make(view, "Enter a valid mobile number", Snackbar.LENGTH_LONG);
+//                        View view1 = snackbar1.getView();
+//                        TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+//                        view1.setPadding(0, 0, 0, 0);
+//                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle, 0, 0, 0);
+//                        textView.setCompoundDrawablePadding(8);
+//                        snackbar1.show();
+                        return;
+                    }
 
 
                 if(isConnected()){
 
-                    authorizeUser(email,password,view);
+                    authorizeUser(mobileNum,password,view);
+                    FlurryAgent.logEvent("LoginButton_loginFragment_Clicked");
 
 
                 }else{
                     snackbar.dismiss();
-                    Snackbar snackbar1 = Snackbar.make(view,"No Internet Connection.Please try again.",Snackbar.LENGTH_LONG);
-                    View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
-                    view1.setPadding(0,0,0,0);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
-                    textView.setCompoundDrawablePadding(8);
-                    snackbar1.show();
+
+                    new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                            .setContentText("No Internet Conncetion.\n Please try again later.")
+                            .setTitleText("No Connection")
+                            .show();
+
                     return;
 
                 }
@@ -166,7 +196,12 @@ public class Login_Fragment extends Fragment {
         });
     }
 
-    private void authorizeUser(String email, String password, final View rootview) {
+
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private void authorizeUser(String mobileNum, String password, final View rootview) {
 
 
         snackbar.setText("Logging you in...");
@@ -177,8 +212,9 @@ public class Login_Fragment extends Fragment {
         textView.setCompoundDrawablePadding(8);
             snackbar.show();
         AndroidNetworking.post(Api_Urls.BASE_URL+ "authorize")
-                .addUrlEncodeFormBodyParameter("email",email)
+                .addUrlEncodeFormBodyParameter("contact",mobileNum)
                 .addUrlEncodeFormBodyParameter("password",password)
+                .addUrlEncodeFormBodyParameter("email","")
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -188,19 +224,22 @@ public class Login_Fragment extends Fragment {
                             if(result.contentEquals("true")){
 
                                 String tokenId = response.getString("token");
+                                JSONObject s = response.getJSONObject("student");
+                                student = new Student();
 
-                                Student student = new Student();
+                                student.setName(s.getString("name"));
+                                student.setStudentId(Integer.parseInt(s.getString("id")));
+                                student.setClassChoosen(s.getString("class"));
+                                student.setMobileNum(s.getString("contact"));
 
-                                student.setName(response.getString("name"));
-                                SugarRecord.save(student);
 
                                 SessionManager session = new SessionManager(tokenId);
-                                SugarRecord.save(session);
-                                snackbar.dismiss();
 
-                                Intent intent = new Intent(getActivity(), BaseActivity.class);
-                                intent.putExtra("SPLASH SHOWN",true);
-                                startActivity(intent);
+                                SugarRecord.deleteAll(Student.class);
+                                SugarRecord.save(session);
+                                SugarRecord.save(student);
+                                snackbar.dismiss();
+                                gotoBaseActivity();
                             }
                             else{
 
@@ -208,20 +247,30 @@ public class Login_Fragment extends Fragment {
 
                                 snackbar.dismiss();
 
-                                Snackbar snackbar1 = Snackbar.make(rootview,message  + ".Please try again.",Snackbar.LENGTH_LONG);
-                                View view = snackbar1.getView();
-                                TextView textView = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
-                                view.setPadding(0,0,0,0);
-                                textView.setCompoundDrawablePadding(8);
-                                snackbar1.show();
+                                new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                                        .setContentText(message)
+                                        .setTitleText("Wrong Credentials")
+                                        .setConfirmText("Ok")
+                                        .show();
+//
+//                                Snackbar snackbar1 = Snackbar.make(rootview,message  + ".Please try again.",Snackbar.LENGTH_LONG);
+//                                View view = snackbar1.getView();
+//                                TextView textView = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+//                                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
+//                                view.setPadding(0,0,0,0);
+//                                textView.setCompoundDrawablePadding(8);
+//                                snackbar1.show();
 
 
                             }
 
                         } catch (JSONException e) {
+
+                            Log.d("jsonrror",e.getLocalizedMessage());
+                            Log.d("jsonrror",e.getMessage());
+                            Log.d("jsonrror",e.toString());
                             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                    .setContentText("There seems a problem with us.\nPlease try again later.")
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LOG_AU)")
                                     .setTitleText("Oops..!!")
                                     .show();
                           //  snackbar.dismiss();
@@ -236,13 +285,23 @@ public class Login_Fragment extends Fragment {
 
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202LOG_AU)")
                                 .setTitleText("Oops..!!")
                                 .show();
 
                     }
                 });
 
+    }
+
+
+
+    public void gotoBaseActivity(){
+
+        Intent intent = new Intent(getActivity(), BaseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public boolean isConnected(){

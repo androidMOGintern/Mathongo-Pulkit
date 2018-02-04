@@ -64,7 +64,7 @@ public class Bookmarks_Fragment extends Fragment {
         if(!isConnected()){
 
             new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                    .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                    .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
         }
@@ -151,7 +151,7 @@ public class Bookmarks_Fragment extends Fragment {
                     public void onError(ANError anError) {
 
                         new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("There seems a problem with your internet connection.\nPlease try again later.")
+                                .setContentText("Connection Error!\nPlease try again later.(202BF_BO)")
                                 .setTitleText("Oops..!!")
                                 .show();
 

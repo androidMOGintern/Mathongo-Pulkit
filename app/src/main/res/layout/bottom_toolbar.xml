@@ -19,29 +19,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/homeButton"
-        android:background="@drawable/home"/>
+        android:id="@+id/homeButton" />
 
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/libraryButton"
-        android:background="@drawable/lapperboard"/>
+        android:id="@+id/libraryButton"/>
 
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/eventsButton"
-        android:background="@drawable/calendar"/>
+        android:id="@+id/eventsButton"/>
 
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/profileButton"
-        android:background="@drawable/account"/>
+        android:id="@+id/profileButton"/>
 </LinearLayout>
 </android.support.v7.widget.Toolbar>
 

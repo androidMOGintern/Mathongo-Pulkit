@@ -26,6 +26,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
         registrationComplete.putExtra("token", refreshedToken);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+
+        // just a check comment
     }
 
     private void sendRegistrationToServer(final String token) {

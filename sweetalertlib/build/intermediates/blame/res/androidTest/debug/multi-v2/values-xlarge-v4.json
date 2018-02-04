@@ -4,29 +4,7 @@
             "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/sweetalertlib/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/71e1c408e9e9faa7ddf616eb8cc16925/res/values-xlarge/values.xml",
-                    "from": {
-                        "startLines": "3,5,7,8,9,10,12",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "56,134,199,266,333,399,466",
-                        "endColumns": "76,63,66,66,65,65,54",
-                        "endOffsets": "128,193,261,328,394,460,516"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,132,196,263,330,396,462",
-                        "endColumns": "76,63,66,66,65,65,54",
-                        "endOffsets": "127,191,258,325,391,457,512"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\AndroidStudioProjects\\LearnAcad\\sweetalertlib\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
-            "map": [
-                {
-                    "source": "/home/sahil/AndroidStudioProjects/LearnAcad/C:\\Users\\Sahil Malhotra\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-21.0.0.aar\\9b7d7b3381bbb3d815c98b25879593a1\\res\\values-xlarge\\values.xml",
+                    "source": "/home/sahil/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/6a727cc2b750800cb366d4f63bad879a/res/values-xlarge/values.xml",
                     "from": {
                         "startLines": "3,5,7,8,9,10,12",
                         "startColumns": "4,4,4,4,4,4,4",
