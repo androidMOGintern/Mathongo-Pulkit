@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:padding="5dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/share_fragment_shareButton"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/share_icon"
+        android:layout_gravity="center"
+        android:background="@color/float_transparent"/>
+
+
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/share_fragment_facebookButton"
+        android:layout_height="match_parent"
+        android:src="@drawable/facebook"
+        android:layout_gravity="center"
+        android:background="@color/float_transparent"/>
+
+
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/share_fragment_whatsappButton"
+        android:layout_height="match_parent"
+        android:src="@drawable/whatsapp"
+        android:layout_gravity="center"
+        android:background="@color/float_transparent"/>
+</LinearLayout>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/newbackgroundbase"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ScrollView
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <ImageView
+            android:id="@+id/signUp_step2a_FragmentImageView"
+            android:layout_width="172dp"
+            android:layout_height="108dp"
+            android:layout_marginTop="96dp"
+            android:src="@drawable/otp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="36dp"
+            android:textColor="@color/newGray"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/signUp_step2a_FragmentImageView"
+            android:id="@+id/otpSentTextview"
+            android:textAlignment="center"
+            android:text="Trying to automatically detect an OTP sent to your mobile number."/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/linearLayout_signup2a"
+            android:layout_below="@id/otpSentTextview"
+            android:layout_marginTop="36dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true" >
+
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUp_step2a_editText1"
+                android:textColor="@color/navyBlue"
+                android:inputType="number"
+                android:maxLength="1"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@id/linearLayout_signup2a"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUp_step2a_editText2"
+                android:textColor="@color/navyBlue"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:imeOptions="actionNext"
+                android:maxLength="1"
+                android:nextFocusRight="@id/linearLayout_signup2a"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUp_step2a_editText3"
+                android:textColor="@color/navyBlue"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@id/linearLayout_signup2a"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUp_step2a_editText4"
+                android:textColor="@color/navyBlue"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/signUp_step2a_submitButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout_signup2a"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/new_login_button"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:textColor="@color/cardview_light_background"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@id/signUp_step2a_submitButton"
+            android:textStyle="bold"
+            android:textColor="#141f31"
+            android:lineSpacingExtra="8sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:id="@+id/didntreceiveotpTextView"
+            android:gravity="center_horizontal"
+            android:text="Didn’t receive OTP?" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend"
+            android:textAllCaps="false"
+            android:textColor="@color/newGray"
+            android:layout_alignStart="@+id/didntreceiveotpTextView"
+            android:layout_below="@+id/didntreceiveotpTextView"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/otpResendButton"
+            android:background="@color/float_transparent"/>
+
+        <TextView
+            android:id="@+id/signUp_step2a_chronometerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@+id/didntreceiveotpTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/otpResendButton"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+    </ScrollView>
+
+    <include layout="@layout/progressbar_layout" />
+
+
+</RelativeLayout>

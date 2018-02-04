@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="4dp"
+        android:id="@+id/questionBank_CardView_ResourcesFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/imageView1_ResourcesFragment"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/qbicon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:layout_toEndOf="@+id/imageView1_ResourcesFragment"
+                android:lineSpacingExtra="8sp"
+                android:layout_centerVertical="true"
+                android:text="Question Bank"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="4dp"
+        android:layout_below="@+id/questionBank_CardView_ResourcesFragment"
+        android:id="@+id/formulaSheet_CardView_ResourcesFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/imageView2_ResourcesFragment"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/formulaicon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:layout_toEndOf="@+id/imageView2_ResourcesFragment"
+                android:lineSpacingExtra="8sp"
+                android:layout_centerVertical="true"
+                android:text="Formula Sheets"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="4dp"
+        android:layout_below="@+id/formulaSheet_CardView_ResourcesFragment"
+        android:id="@+id/prevYear_CardView_ResourcesFragment">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/imageView3_ResourcesFragment"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/prevyricon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:layout_toEndOf="@+id/imageView3_ResourcesFragment"
+                android:lineSpacingExtra="8sp"
+                android:layout_centerVertical="true"
+                android:text="Previous Year Questions"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="4dp"
+        android:layout_below="@+id/ncert_CardView_ResourcesFragment"
+        android:id="@+id/books_CardView_ResourcesFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/imageView5_ResourcesFragment"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/booksicon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:layout_toEndOf="@+id/imageView5_ResourcesFragment"
+                android:lineSpacingExtra="8sp"
+                android:layout_centerVertical="true"
+                android:text="Books"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="4dp"
+        android:layout_below="@+id/prevYear_CardView_ResourcesFragment"
+        android:id="@+id/ncert_CardView_ResourcesFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/imageView4_ResourcesFragment"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ncertsolicon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="26dp"
+                android:layout_toEndOf="@+id/imageView4_ResourcesFragment"
+                android:lineSpacingExtra="8sp"
+                android:layout_centerVertical="true"
+                android:text="NCERT Solutions"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+
+</LinearLayout>
