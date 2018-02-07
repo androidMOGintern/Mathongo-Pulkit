@@ -32,7 +32,6 @@ import com.learnacad.learnacad.Models.Student;
 import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.Networking.ForceUpdateChecker;
 import com.learnacad.learnacad.Notifications.Config;
-import com.learnacad.learnacad.Notifications.NotificationHandler;
 import com.learnacad.learnacad.R;
 import com.orm.SugarRecord;
 
@@ -276,7 +275,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateChec
 
     public void moveToNext(){
 
-        List<SessionManager> sessionManager = listAll(SessionManager.class);
+        List<SessionManager> sessionManager = SugarRecord.listAll(SessionManager.class);
         if (sessionManager != null) {
 
             if (sessionManager.size() > 0) {
@@ -324,7 +323,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateChec
                 new IntentFilter(Config.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
-        NotificationHandler.clearNotifications(getApplicationContext());
+//        NotificationHandler.clearNotifications(getApplicationContext());
 
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 

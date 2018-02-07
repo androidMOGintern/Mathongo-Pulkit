@@ -7,6 +7,14 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
+plugins {
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
@@ -23,6 +31,9 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionName "2.2.2"
+        manifestPlaceholders = [onesignal_app_id               : "12d6ea03-dc75-4103-a2ac-75454522a40f",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: "REMOTE"]
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionCode 10
         vectorDrawables.useSupportLibrary = true
@@ -70,6 +81,8 @@ dependencies {
     compile 'es.voghdev.pdfviewpager:library:1.0.3'
     compile 'com.flurry.android:ads:8.2.0'
     compile 'com.brouding:android-simple-dialog:0.3.1'
+    compile 'com.onesignal:OneSignal:3.7.1'
+
 
 
     compile project(path: ':sweetalertlib')

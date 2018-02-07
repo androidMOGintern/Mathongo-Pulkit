@@ -21,6 +21,28 @@
                     }
                 }
             ]
+        },
+        {
+            "outputFile": "/Users/pulkit-mac/StudioProjects/MathongoFirst/sweetalertlib/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-w500dp-v13/values-w500dp-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/pulkit-mac/.gradle/caches/transforms-1/files-1.1/appcompat-v7-21.0.0.aar/c6a9497475beaa69574d9f4589755f31/res/values-w500dp/values.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endColumns": "54",
+                        "endOffsets": "106"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "54",
+                        "endOffsets": "105"
+                    }
+                }
+            ]
         }
     ]
 }

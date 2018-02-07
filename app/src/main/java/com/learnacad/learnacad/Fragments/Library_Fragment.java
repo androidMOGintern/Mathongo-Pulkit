@@ -1,6 +1,10 @@
 package com.learnacad.learnacad.Fragments;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -50,6 +54,7 @@ public class Library_Fragment extends Fragment {
 
 
 
+
         return view;
 
     }
@@ -74,11 +79,13 @@ public class Library_Fragment extends Fragment {
 
 
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_library,menu);
         super.onCreateOptionsMenu(menu, inflater);
+
 
     }
 
@@ -99,7 +106,6 @@ public class Library_Fragment extends Fragment {
 
 
         }
-
 
         return true;
     }

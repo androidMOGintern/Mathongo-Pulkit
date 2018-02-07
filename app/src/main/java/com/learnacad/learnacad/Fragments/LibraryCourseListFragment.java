@@ -1,14 +1,18 @@
 package com.learnacad.learnacad.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -32,28 +36,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.flurry.android.FlurryAgent;
 import com.learnacad.learnacad.Activities.BaseActivity;
 import com.learnacad.learnacad.Adapters.ChipsViewAdapeter;
 import com.learnacad.learnacad.Adapters.LibraryCourseListAdapter;
-import com.learnacad.learnacad.BuildConfig;
 import com.learnacad.learnacad.Fragments.Resources_Fragments.ResourcesBaseFragment;
 import com.learnacad.learnacad.Models.CONSTANTS;
 import com.learnacad.learnacad.Models.Filter;
 import com.learnacad.learnacad.Models.FiltersViewModel;
+import com.learnacad.learnacad.Models.Messages;
 import com.learnacad.learnacad.Models.Minicourse;
 import com.learnacad.learnacad.Models.SessionManager;
 import com.learnacad.learnacad.Models.Tutor;
 import com.learnacad.learnacad.Networking.Api_Urls;
+import com.learnacad.learnacad.Activities.NotificationList;
 import com.learnacad.learnacad.R;
 import com.orm.SugarRecord;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,12 +64,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static android.content.ContentValues.TAG;
 import static com.orm.SugarRecord.deleteAll;
 import static com.orm.SugarRecord.listAll;
-import static java.lang.Boolean.TRUE;
 
 /**
  * Created by Sahil Malhotra on 19-06-2017.
@@ -95,6 +96,9 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     AppBarLayout appBarLayout;
     ImageView imageViewHeader;
     String version;
+    BroadcastReceiver updateUIReciver;
+    IntentFilter filter;
+
 
     public static boolean ISVISIBLE;
 
@@ -123,6 +127,20 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
 
         setHasOptionsMenu(true);
+
+        filter = new IntentFilter();
+
+        filter.addAction("com.hello.action");
+
+        updateUIReciver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.i(TAG, "onReceive: notificationrecieved");
+                getActivity().invalidateOptionsMenu();
+            }
+        };
+
         mViewModel = ViewModelProviders.of(getActivity()).get(FiltersViewModel.class);
 
 
@@ -182,12 +200,15 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     public void onResume() {
         super.onResume();
         appBarLayout.addOnOffsetChangedListener(this);
+        getActivity().registerReceiver(updateUIReciver, filter);
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         appBarLayout.removeOnOffsetChangedListener(this);
+        getActivity().unregisterReceiver(updateUIReciver);
     }
 
     private void setData(Bundle b) {
@@ -215,6 +236,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -242,7 +264,47 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
                 return false;
             }
         });
+        final MenuItem menuItem = menu.findItem(R.id.action_bellnotification);
+        new AsyncTask<Void, Void, Long>() {
+            @Override
+            protected Long doInBackground(Void... voids) {
+                return SugarRecord.count(Messages.class,"seen = 0",null);
+            }
 
+            @Override
+            protected void onPostExecute(Long integer) {
+                menuItem.setIcon(buildCounterDrawable(integer, getResources().getDrawable(R.drawable.notification)));
+
+            }
+        }.execute();
+
+    }
+
+    private Drawable buildCounterDrawable(Long count, Drawable drawable) {
+
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.notification_layout, null);
+        view.setBackground(drawable);
+
+        if (count == 0) {
+            View counterTextPanel = view.findViewById(R.id.counterValuePanel);
+            counterTextPanel.setVisibility(View.GONE);
+        } else {
+            TextView textView = view.findViewById(R.id.count);
+            textView.setText("" + count);
+        }
+
+        view.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+
+        return new BitmapDrawable(getResources(), bitmap);
     }
 
     @Override
@@ -266,6 +328,11 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
             return true;
 
        }
+
+        if(item.getItemId() == R.id.action_bellnotification) {
+            startActivity(new Intent(getActivity(), NotificationList.class));
+            return true;
+        }
 
 //        if(item.getItemId() == R.id.NotificationsIII){
 //
@@ -709,5 +776,7 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
         swipeRefreshLayout.setEnabled( verticalOffset == 0);
+
     }
+
 }

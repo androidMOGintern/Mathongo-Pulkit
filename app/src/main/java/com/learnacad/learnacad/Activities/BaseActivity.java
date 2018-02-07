@@ -1,5 +1,6 @@
 package com.learnacad.learnacad.Activities;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -104,6 +105,8 @@ public class BaseActivity extends AppCompatActivity
 
         flurryMaps = new HashMap<>();
 
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
