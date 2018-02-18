@@ -66,7 +66,7 @@ public class RecommendedListAdapter extends RecyclerView.Adapter<RecommendedList
         public RecommendedViewHolder(View itemView) {
             super(itemView);
 
-            textView = (TextView) itemView.findViewById(R.id.textView);
+            textView = itemView.findViewById(R.id.textView);
         }
     }
 }

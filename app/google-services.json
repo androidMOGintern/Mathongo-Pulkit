@@ -1,51 +1,35 @@
 {
   "project_info": {
-    "project_number": "861281119123",
-    "firebase_url": "https://learnacad-1d335.firebaseio.com",
-    "project_id": "learnacad-1d335",
-    "storage_bucket": "learnacad-1d335.appspot.com"
+    "project_number": "229419548940",
+    "firebase_url": "https://demoapp-b97ac.firebaseio.com",
+    "project_id": "demoapp-b97ac",
+    "storage_bucket": "demoapp-b97ac.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:861281119123:android:25922e65465651c5",
+        "mobilesdk_app_id": "1:229419548940:android:25922e65465651c5",
         "android_client_info": {
           "package_name": "com.learnacad.learnacad"
         }
       },
       "oauth_client": [
         {
-          "client_id": "861281119123-1nnfndp51d5hmb968shr27aaupdgit9p.apps.googleusercontent.com",
+          "client_id": "229419548940-9vro1oues04rb29kgi4ethacdrhd29c5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.learnacad.learnacad",
-            "certificate_hash": "6689ae825e4361edea22475f50cc6b5c9bfa48e2"
+            "certificate_hash": "801874eb95ac1a03d9e9150a32a8bb0c3d76fc40"
           }
         },
         {
-          "client_id": "861281119123-gj7d0sknuanl920ersga7lt1d727g756.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.learnacad.learnacad",
-            "certificate_hash": "6354a2136e3171f4a97d9de00642bc430eaa8e76"
-          }
-        },
-        {
-          "client_id": "861281119123-4oja2f9p8kjq10ofiad3qe6qh42hp3hu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.learnacad.learnacad",
-            "certificate_hash": "c7d70f805ca8fc1382e2d04720d6fb5957bd88b9"
-          }
-        },
-        {
-          "client_id": "861281119123-pb6msb9n8e75sr1ridppquuejsn7jnh3.apps.googleusercontent.com",
+          "client_id": "229419548940-ohmq59uccve2i4mbfmkldeijg8rd76ad.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBJTUUizqZ3vMhwIusyjebq87MU4oSbLfo"
+          "current_key": "AIzaSyDUM407xL2JYOdfqr19mNFWZWgSxfClKhE"
         }
       ],
       "services": {
@@ -56,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "861281119123-pb6msb9n8e75sr1ridppquuejsn7jnh3.apps.googleusercontent.com",
+              "client_id": "229419548940-ohmq59uccve2i4mbfmkldeijg8rd76ad.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

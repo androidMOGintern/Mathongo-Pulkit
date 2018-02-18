@@ -67,7 +67,7 @@ public class Library_Top_level_Adapter extends RecyclerView.Adapter<Library_Top_
         public LibraryTopViewHolder(View itemView) {
             super(itemView);
 
-            button = (Button) itemView.findViewById(R.id.libraryTopLevelButton);
+            button = itemView.findViewById(R.id.libraryTopLevelButton);
         }
     }
 }

@@ -53,6 +53,8 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MaterialViewActivity extends AppCompatActivity {
 
+    private static final String TAG = "pdfcontent";
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -88,6 +90,8 @@ public class MaterialViewActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         assert bundle != null;
         Material material = (Material) bundle.getSerializable("Material");
+
+        Log.i(TAG, "onCreate: "+material.getName()+"  "+material.getMinicourseId()+"  "+material.getId());
 
 
         root = findViewById(R.id.rootView);

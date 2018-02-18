@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -102,7 +103,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
             return;
         }
 
-        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.cordinatorLayout_library_course_content);
+        final CoordinatorLayout coordinatorLayout = findViewById(R.id.cordinatorLayout_library_course_content);
         lectures = new ArrayList<>();
         intent = getIntent();
         course_id = intent.getIntExtra("MINICOURSE_ID",0);
@@ -124,11 +125,11 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
 
-        titleTextView = (TextView) findViewById(R.id.LibraryCourseItemTitle);
+        titleTextView = findViewById(R.id.LibraryCourseItemTitle);
       //  followersTextView = (TextView) findViewById(R.id.LibraryCourseItemFollowersTextView);
-        descriptionTextView = (TextView) findViewById(R.id.LibraryCourseItemDescription);
-        previousToCurr = (TextView) findViewById(R.id.previousTOcurrentTextView);
-        ratingBar = (RatingBar) findViewById(R.id.LibraryCourseItemRatingbar);
+        descriptionTextView = findViewById(R.id.LibraryCourseItemDescription);
+        previousToCurr = findViewById(R.id.previousTOcurrentTextView);
+        ratingBar = findViewById(R.id.LibraryCourseItemRatingbar);
 
         Typeface typefaceMedium = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Medium.ttf");
         Typeface typefaceRegular = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Regular.ttf");
@@ -139,15 +140,15 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
 
       //  lectures = new ArrayList<>();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.libraryCourseContentToolbar);
+        Toolbar toolbar = findViewById(R.id.libraryCourseContentToolbar);
         toolbar.setNavigationIcon(R.drawable.leftarrow);
         setSupportActionBar(toolbar);
         this.setTitle("");
 
-        viewPager = (ViewPager) findViewById(R.id.libraryCourseContentViewPager);
+        viewPager = findViewById(R.id.libraryCourseContentViewPager);
 
 
-        tabLayout = (TabLayout) findViewById(R.id.libraryCourseContentTabLayout);
+        tabLayout = findViewById(R.id.libraryCourseContentTabLayout);
 
         for (int i = 0; i < 4; ++i) {
 
@@ -180,7 +181,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
 
 
 
-        final Button enrollbutton = (Button) findViewById(R.id.LibraryCourseItemEnrollButton);
+        final Button enrollbutton = findViewById(R.id.LibraryCourseItemEnrollButton);
 
 
         enrollbutton.setTransformationMethod(null);

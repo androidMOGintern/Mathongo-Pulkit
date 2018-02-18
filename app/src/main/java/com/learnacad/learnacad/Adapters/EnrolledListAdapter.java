@@ -54,7 +54,7 @@ public class EnrolledListAdapter extends RecyclerView.Adapter<EnrolledListAdapte
         public  EnrolledViewHolder(View itemView){
             super(itemView);
 
-            textView = (TextView) itemView.findViewById(R.id.textView);
+            textView = itemView.findViewById(R.id.textView);
         }
 
     }

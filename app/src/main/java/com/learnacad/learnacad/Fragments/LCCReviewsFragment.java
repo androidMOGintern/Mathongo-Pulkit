@@ -85,16 +85,16 @@ public class LCCReviewsFragment extends Fragment {
 
         reviewsArrayList = new ArrayList<>();
         toSendreviewsArrayList = new ArrayList<>();
-        listView = (ListView) view.findViewById(R.id.reviewsListView);
+        listView = view.findViewById(R.id.reviewsListView);
         loadMoreButton = new Button(getActivity());
         loadMoreButton.setText("Load More");
         loadMoreButton.setBackgroundColor(Color.TRANSPARENT);
         loadMoreButton.setTextColor(Color.parseColor("#1589ee"));
         loadMoreButton.setAllCaps(false);
-        emptyStateLayout = (RelativeLayout) view.findViewById(R.id.empty_reviews_state_layoutInclusion);
-        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nested);
-        linearLayout = (LinearLayout) view.findViewById(R.id.belowNestedScrllLL);
-        rateAndReviewButtonEmptystate = (Button) view.findViewById(R.id.empty_reviews_state_rateandreview_button);
+        emptyStateLayout = view.findViewById(R.id.empty_reviews_state_layoutInclusion);
+        nestedScrollView = view.findViewById(R.id.nested);
+        linearLayout = view.findViewById(R.id.belowNestedScrllLL);
+        rateAndReviewButtonEmptystate = view.findViewById(R.id.empty_reviews_state_rateandreview_button);
         emptyStateLayout.setVisibility(View.GONE);
 
         reviewsHeadingTextView = view.findViewById(R.id.reviewsTextView);
@@ -105,11 +105,11 @@ public class LCCReviewsFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.pb);
         progressBar.setIndeterminate(true);
-        rateAndreviewButton = (Button) view.findViewById(R.id.lccratings_card_rateandreviewButton);
-        ratingBar = (RatingBar) view.findViewById(R.id.lccratings_card_ratingBar);
-        ratingTextView = (TextView) view.findViewById(R.id.lccratings_card_ratingValue_TextView);
-        numOfTextView = (TextView) view.findViewById(R.id.lccratings_card_numofRatingsValue_TextView);
-        rateAndreviewButton = (Button) view.findViewById(R.id.lccratings_card_rateandreviewButton);
+        rateAndreviewButton = view.findViewById(R.id.lccratings_card_rateandreviewButton);
+        ratingBar = view.findViewById(R.id.lccratings_card_ratingBar);
+        ratingTextView = view.findViewById(R.id.lccratings_card_ratingValue_TextView);
+        numOfTextView = view.findViewById(R.id.lccratings_card_numofRatingsValue_TextView);
+        rateAndreviewButton = view.findViewById(R.id.lccratings_card_rateandreviewButton);
         course_id = getActivity().getIntent().getIntExtra("MINICOURSE_ID", 0);
 
         isEnrolled = checkEnrolled();
@@ -211,10 +211,10 @@ public class LCCReviewsFragment extends Fragment {
                 LayoutInflater inflator = getActivity().getLayoutInflater();
                 final View dialogView = inflator.inflate(R.layout.detailed_review_layout, null);
                 builder.setView(dialogView);
-                TextView nameTextView = (TextView) dialogView.findViewById(R.id.detailedReviewLayoutNameofStudent);
-                ImageButton closeButton = (ImageButton) dialogView.findViewById(R.id.imageButtonReviewDialog);
-                TextView descTextView = (TextView) dialogView.findViewById(R.id.TextViewReviewDialog);
-                RatingBar ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBardetailedReviewLayout);
+                TextView nameTextView = dialogView.findViewById(R.id.detailedReviewLayoutNameofStudent);
+                ImageButton closeButton = dialogView.findViewById(R.id.imageButtonReviewDialog);
+                TextView descTextView = dialogView.findViewById(R.id.TextViewReviewDialog);
+                RatingBar ratingBar = dialogView.findViewById(R.id.ratingBardetailedReviewLayout);
 
                 nameTextView.setText(toSendreviewsArrayList.get(i).getStudentName());
 
@@ -285,10 +285,10 @@ public class LCCReviewsFragment extends Fragment {
         LayoutInflater inflator = getActivity().getLayoutInflater();
         final View dialogView = inflator.inflate(R.layout.review_post_layout, null);
         builder.setView(dialogView);
-        final EditText errorEditText = (EditText) dialogView.findViewById(R.id.editTextReviewDialog);
-        Button submitButton = (Button) dialogView.findViewById(R.id.submitButtonReviewDialog);
-        ImageButton closeButton = (ImageButton) dialogView.findViewById(R.id.imageButtonReviewDialog);
-        final RatingBar ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBarReviewPostItem);
+        final EditText errorEditText = dialogView.findViewById(R.id.editTextReviewDialog);
+        Button submitButton = dialogView.findViewById(R.id.submitButtonReviewDialog);
+        ImageButton closeButton = dialogView.findViewById(R.id.imageButtonReviewDialog);
+        final RatingBar ratingBar = dialogView.findViewById(R.id.ratingBarReviewPostItem);
 
 
 

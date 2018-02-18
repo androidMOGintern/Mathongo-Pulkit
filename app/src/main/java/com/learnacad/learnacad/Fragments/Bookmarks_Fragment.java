@@ -51,12 +51,12 @@ public class Bookmarks_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.bookmarks_fragment_layout,container,false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.bookmarksRecyclerViewList);
+        recyclerView = v.findViewById(R.id.bookmarksRecyclerViewList);
         fetchedBookmarks = new ArrayList<>();
         adapter = new BookmarksListAdapter(getActivity(),fetchedBookmarks);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        emptyStateLayout = (RelativeLayout) v.findViewById(R.id.emptystate_layout);
+        emptyStateLayout = v.findViewById(R.id.emptystate_layout);
 
         progressBar = v.findViewById(R.id.pb);
         progressBar.setIndeterminate(true);

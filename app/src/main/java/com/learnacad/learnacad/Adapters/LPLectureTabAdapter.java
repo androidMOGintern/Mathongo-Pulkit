@@ -119,11 +119,11 @@ public class LPLectureTabAdapter extends RecyclerView.Adapter<LPLectureTabAdapte
         public LPLectureTabViewHolder(View itemView) {
             super(itemView);
 
-            completeCard = (CardView) itemView.findViewById(R.id.lecturePlayerItemCardView);
-            titleTextView = (TextView) itemView.findViewById(R.id.lecturePlayerLectureItemTitleTextView);
-            numTextView = (TextView) itemView.findViewById(R.id.lecturePlayerLectureItemTextView);
-            playButton = (ImageButton) itemView.findViewById(R.id.lecturePlayerLectureItemPlayButton);
-            indicator = (Indicator) itemView.findViewById(R.id.indicator);
+            completeCard = itemView.findViewById(R.id.lecturePlayerItemCardView);
+            titleTextView = itemView.findViewById(R.id.lecturePlayerLectureItemTitleTextView);
+            numTextView = itemView.findViewById(R.id.lecturePlayerLectureItemTextView);
+            playButton = itemView.findViewById(R.id.lecturePlayerLectureItemPlayButton);
+            indicator = itemView.findViewById(R.id.indicator);
         }
     }
 }

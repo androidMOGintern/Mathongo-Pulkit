@@ -151,7 +151,7 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.filter_list_group,null);
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.lblListHeader);
+        TextView textView = convertView.findViewById(R.id.lblListHeader);
         textView.setText(headerTitle);
         textView.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -183,11 +183,11 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter {
 
         if(convertView == null){
 
-            LayoutInflater inflater = (LayoutInflater) this.mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.filter_list_item,null);
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.lblListItem);
+        TextView textView = convertView.findViewById(R.id.lblListItem);
         textView.setText(childText);
 
         return convertView;

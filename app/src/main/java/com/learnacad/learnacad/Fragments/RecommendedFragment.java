@@ -29,7 +29,7 @@ public class RecommendedFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.recommended_fragment_layout,container,false);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recommendedRecyclerViewList);
+        recyclerView = v.findViewById(R.id.recommendedRecyclerViewList);
         titleList = new ArrayList<>();
         recommendedListAdapter = new RecommendedListAdapter(getActivity(),titleList);
         recyclerView.setAdapter(recommendedListAdapter);

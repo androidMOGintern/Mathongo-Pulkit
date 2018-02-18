@@ -151,9 +151,9 @@ public class LCCReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public UserViewHolder(View itemView) {
             super(itemView);
 
-            nameTextView = (TextView) itemView.findViewById(R.id.reviews_item_nameTextView);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.reviews_item_ratingBar);
-            descTextView = (TextView) itemView.findViewById(R.id.reviews_item_descriptionTextView);
+            nameTextView = itemView.findViewById(R.id.reviews_item_nameTextView);
+            ratingBar = itemView.findViewById(R.id.reviews_item_ratingBar);
+            descTextView = itemView.findViewById(R.id.reviews_item_descriptionTextView);
         }
 
 
@@ -166,7 +166,7 @@ public class LCCReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public LoadMoreHolder(View itemView) {
             super(itemView);
 
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
+            progressBar = itemView.findViewById(R.id.progressBar1);
         }
     }
 

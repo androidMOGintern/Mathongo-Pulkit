@@ -82,9 +82,9 @@ public class Login_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        final TextInputEditText mobileNumEditText = (TextInputEditText) view.findViewById(R.id.loginMobileNumEditText);
-        final TextInputEditText passwordEditText = (TextInputEditText) view.findViewById(R.id.loginPasswordEditText);
-        Button signUp = (Button) view.findViewById(R.id.loginSingupButton);
+        final TextInputEditText mobileNumEditText = view.findViewById(R.id.loginMobileNumEditText);
+        final TextInputEditText passwordEditText = view.findViewById(R.id.loginPasswordEditText);
+        Button signUp = view.findViewById(R.id.loginSingupButton);
         Typeface typefaceMedium = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Medium.ttf");
         Typeface typefaceRegular = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Regular.ttf");
         mobileNumEditText.setTypeface(typefaceRegular);
@@ -122,7 +122,7 @@ public class Login_Fragment extends Fragment {
             }
         });
 
-        Button loginButton = (Button) view.findViewById(R.id.loginButton);
+        Button loginButton = view.findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +206,7 @@ public class Login_Fragment extends Fragment {
 
         snackbar.setText("Logging you in...");
             View view = snackbar.getView();
-            TextView textView = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
             textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greencircle,0,0,0);
             view.setPadding(0,0,0,0);
         textView.setCompoundDrawablePadding(8);

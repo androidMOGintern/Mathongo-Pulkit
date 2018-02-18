@@ -86,15 +86,15 @@ public class MyCourses_Fragment extends Fragment {
 
         }
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.mycoursesRecyclerView);
+        recyclerView = view.findViewById(R.id.mycoursesRecyclerView);
         minicoursesList = new ArrayList<>();
         tutors = new ArrayList<>();
         listAdapter = new LibraryCourseListAdapter(getActivity(),minicoursesList,null,tutors);
         recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         progressBar = view.findViewById(R.id.pb);
-        progressBar.setIndeterminate(true);;
-       emptyStateLayout = (RelativeLayout) view.findViewById(R.id.mycoursesemptyLayout);
+        progressBar.setIndeterminate(true);
+        emptyStateLayout = view.findViewById(R.id.mycoursesemptyLayout);
 
         getActivity().setTitle("My Courses");
         fetchData();

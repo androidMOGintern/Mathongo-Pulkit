@@ -30,16 +30,16 @@ public class ContinueFeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        ProgressBar linearProgressBar = (ProgressBar) view.findViewById(R.id.linearProgressBarContinue);
+        ProgressBar linearProgressBar = view.findViewById(R.id.linearProgressBarContinue);
         linearProgressBar.setMax(100);
         linearProgressBar.setProgress(50);
 
-        CircleProgressView circleProgressView = (CircleProgressView) view.findViewById(R.id.circularProgressBarContinue);
+        CircleProgressView circleProgressView = view.findViewById(R.id.circularProgressBarContinue);
         circleProgressView.setTextEnabled(true);
         circleProgressView.setStartAngle(90);
         circleProgressView.setProgress(50);
 
-        CardView cardView = (CardView) view.findViewById(R.id.continueFeedFragmentCard);
+        CardView cardView = view.findViewById(R.id.continueFeedFragmentCard);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -72,15 +72,15 @@ public class LCCDetailsFragment extends Fragment {
         mContext = getContext();
 
 
-        mediumTextView = (TextView) view.findViewById(R.id.lccdetails_courseDetails_languageValueTextView);
-        difficultyTextView = (TextView) view.findViewById(R.id.lccdetails_courseDetails_difficultyValueTextView);
-        durationTextView = (TextView) view.findViewById(R.id.lccdetails_courseDetails_durationValueTextView);
-        relevanceTextView = (TextView) view.findViewById(R.id.lccdetails_courseDetails_relevanceValueTextView);
-        classTextView = (TextView) view.findViewById(R.id.lccdetails_courseDetails_classValueTextView);
-        circleImageView = (CircleImageView) view.findViewById(R.id.lccdetails_teacherInfo_teachersCircleImageView);
+        mediumTextView = view.findViewById(R.id.lccdetails_courseDetails_languageValueTextView);
+        difficultyTextView = view.findViewById(R.id.lccdetails_courseDetails_difficultyValueTextView);
+        durationTextView = view.findViewById(R.id.lccdetails_courseDetails_durationValueTextView);
+        relevanceTextView = view.findViewById(R.id.lccdetails_courseDetails_relevanceValueTextView);
+        classTextView = view.findViewById(R.id.lccdetails_courseDetails_classValueTextView);
+        circleImageView = view.findViewById(R.id.lccdetails_teacherInfo_teachersCircleImageView);
 
-        teachersNameTextView = (TextView) view.findViewById(R.id.lccdetails_teacherInfo_teachersNameTextView);
-        teachersDescriptionTextView = (TextView) view.findViewById(R.id.lccdetails_teacherInfo_teachersDescription);
+        teachersNameTextView = view.findViewById(R.id.lccdetails_teacherInfo_teachersNameTextView);
+        teachersDescriptionTextView = view.findViewById(R.id.lccdetails_teacherInfo_teachersDescription);
 
 
         return view;

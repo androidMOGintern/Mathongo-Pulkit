@@ -77,11 +77,11 @@ public class Register_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        final TextInputEditText nameEditText = (TextInputEditText) view.findViewById(R.id.editTextNameRegisterFragment);
-        final TextInputEditText emailEditText = (TextInputEditText) view.findViewById(R.id.editTextEmailRegisterFragment);
-        final TextInputEditText passwordEditText = (TextInputEditText) view.findViewById(R.id.editTextCreatePasswordRegisterFragment);
-        final TextInputEditText pincodeEditText = (TextInputEditText) view.findViewById(R.id.editTextPincodeRegisterFragment);
-        final TextInputEditText mobileNumEditText = (TextInputEditText) view.findViewById(R.id.editTextmobileNumRegisterFragment);
+        final TextInputEditText nameEditText = view.findViewById(R.id.editTextNameRegisterFragment);
+        final TextInputEditText emailEditText = view.findViewById(R.id.editTextEmailRegisterFragment);
+        final TextInputEditText passwordEditText = view.findViewById(R.id.editTextCreatePasswordRegisterFragment);
+        final TextInputEditText pincodeEditText = view.findViewById(R.id.editTextPincodeRegisterFragment);
+        final TextInputEditText mobileNumEditText = view.findViewById(R.id.editTextmobileNumRegisterFragment);
         Typeface typefaceRegular = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Regular.ttf");
         Typeface typefaceMedium = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Medium.ttf");
         nameEditText.setTypeface(typefaceRegular);
@@ -89,12 +89,12 @@ public class Register_Fragment extends Fragment {
         passwordEditText.setTypeface(typefaceRegular);
         pincodeEditText.setTypeface(typefaceRegular);
         mobileNumEditText.setTypeface(typefaceRegular);
-        TextView alreadyRegisteredTV = (TextView) view.findViewById(R.id.textView2);
+        TextView alreadyRegisteredTV = view.findViewById(R.id.textView2);
         alreadyRegisteredTV.setTypeface(typefaceRegular);
 
         //  viewPager = (ViewPager) getActivity().findViewById(R.id.loginActivityViewPager);
-        Button registerButton = (Button) view.findViewById(R.id.buttonRegisterRegisterFragment);
-        Button loginButton = (Button) view.findViewById(R.id.RegisterLoginButton);
+        Button registerButton = view.findViewById(R.id.buttonRegisterRegisterFragment);
+        Button loginButton = view.findViewById(R.id.RegisterLoginButton);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +117,7 @@ public class Register_Fragment extends Fragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,classes);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final Spinner spinner = (Spinner) view.findViewById(R.id.spinnerRegisterFragment);
+        final Spinner spinner = view.findViewById(R.id.spinnerRegisterFragment);
         spinner.setAdapter(dataAdapter);
         spinner.setSelection(0,true);
         View v = spinner.getSelectedView();
@@ -155,7 +155,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter name",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -169,7 +169,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter email",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -181,7 +181,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter password",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -193,7 +193,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter a valid pincode.",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -205,7 +205,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter a valid email address.",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -218,7 +218,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Enter a valid mobile number.",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -230,7 +230,7 @@ public class Register_Fragment extends Fragment {
 
                     Snackbar snackbar1 = Snackbar.make(view,"Please select a class.",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);
@@ -262,7 +262,7 @@ public class Register_Fragment extends Fragment {
                 }else{
                     Snackbar snackbar1 = Snackbar.make(view,"No Internet Connection.Please try again.",Snackbar.LENGTH_LONG);
                     View view1 = snackbar1.getView();
-                    TextView textView = (TextView) view1.findViewById(android.support.design.R.id.snackbar_text);
+                    TextView textView = view1.findViewById(android.support.design.R.id.snackbar_text);
                     view1.setPadding(0,0,0,0);
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle,0,0,0);
                     textView.setCompoundDrawablePadding(8);

@@ -74,10 +74,10 @@ public class BookmarksListAdapter  extends RecyclerView.Adapter<BookmarksListAda
         public BookmarksListViewHolder(View itemView) {
             super(itemView);
 
-            textViewNumber = (TextView) itemView.findViewById(R.id.lcclectures_item_number);
-            titleTextView = (TextView) itemView.findViewById(R.id.lcclectures_item_titleTextView);
-            durationTextView = (TextView) itemView.findViewById(R.id.lcclectures_item_DurartionTextView);
-            playButton = (ImageButton) itemView.findViewById(R.id.lcclectures_item_playButton);
+            textViewNumber = itemView.findViewById(R.id.lcclectures_item_number);
+            titleTextView = itemView.findViewById(R.id.lcclectures_item_titleTextView);
+            durationTextView = itemView.findViewById(R.id.lcclectures_item_DurartionTextView);
+            playButton = itemView.findViewById(R.id.lcclectures_item_playButton);
         }
     }
 }

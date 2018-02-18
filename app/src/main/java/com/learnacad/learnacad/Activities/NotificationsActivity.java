@@ -33,7 +33,7 @@ public class NotificationsActivity extends AppCompatActivity implements Recycler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarNotifications);
+        Toolbar toolbar = findViewById(R.id.toolbarNotifications);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Notification Center");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,8 +45,8 @@ public class NotificationsActivity extends AppCompatActivity implements Recycler
                 onBackPressed();
             }
         });
-        recyclerView = (RecyclerView) findViewById(R.id.notificationsListRecyclerView);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.notificationsListCoordinatorLayout);
+        recyclerView = findViewById(R.id.notificationsListRecyclerView);
+        coordinatorLayout = findViewById(R.id.notificationsListCoordinatorLayout);
         notificationsArrayList = new ArrayList<>();
         notificationsListAdapter = new NotificationsListAdapter(this,notificationsArrayList);
 

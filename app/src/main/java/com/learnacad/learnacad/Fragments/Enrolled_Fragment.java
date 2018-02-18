@@ -28,7 +28,7 @@ public class Enrolled_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.enrolled_mycourses_fragment_layout,container,false);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.enrolledmyCoursesList);
+        recyclerView = v.findViewById(R.id.enrolledmyCoursesList);
         titlesList = new ArrayList<>();
         adapter = new EnrolledListAdapter(getActivity(),titlesList);
         recyclerView.setAdapter(adapter);

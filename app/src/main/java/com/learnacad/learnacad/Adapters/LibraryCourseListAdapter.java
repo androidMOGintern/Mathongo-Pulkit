@@ -142,9 +142,8 @@ public class LibraryCourseListAdapter extends RecyclerView.Adapter<LibraryCourse
             public void onClick(View view) {
 
                 FlurryAgent.logEvent("Course_" + minicourse.getName() + "_Clicked");
-
                 Intent intent = new Intent(mContext,LibraryCourseContentActivity.class);
-                String pid = String.valueOf(minicourse.getCourse_id()) + String.valueOf(tutors.get(position).getTutor_id());
+                String pid = String.valueOf(minicourse.getCourse_id()) + "A";
                 intent.putExtra("MINICOURSE_ID",minicourse.getCourse_id());
                 intent.putExtra("PROCESS_ID",pid);
                 intent.putExtra("ENROLLED",minicourse.getEnrolled());
@@ -262,12 +261,12 @@ public class LibraryCourseListAdapter extends RecyclerView.Adapter<LibraryCourse
 
 //            enrollButton = (Button) itemView.findViewById(R.id.LibraryCourseItemEnrollButton);
             linearColorView = itemView.findViewById(R.id.categoryLineColor);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.LibraryCourseItemRatingbar);
+            ratingBar = itemView.findViewById(R.id.LibraryCourseItemRatingbar);
 //            bookmarkButton = (ImageButton) itemView.findViewById(R.id.LibraryCourseItemBookMarkButton);
-            textViewCourseItemTitle = (TextView) itemView.findViewById(R.id.LibraryCourseItemTitle);
-            circleImageView = (CircleImageView) itemView.findViewById(R.id.LibraryCourseItemCircleImageView);
-            textViewCourseItemDescription = (TextView) itemView.findViewById(R.id.LibraryCourseItemDescription);
-            textViewCourseItemTutorName = (TextView) itemView.findViewById(R.id.LibraryCourseItemTeacherNameTextView);
+            textViewCourseItemTitle = itemView.findViewById(R.id.LibraryCourseItemTitle);
+            circleImageView = itemView.findViewById(R.id.LibraryCourseItemCircleImageView);
+            textViewCourseItemDescription = itemView.findViewById(R.id.LibraryCourseItemDescription);
+            textViewCourseItemTutorName = itemView.findViewById(R.id.LibraryCourseItemTeacherNameTextView);
         }
     }
 /*

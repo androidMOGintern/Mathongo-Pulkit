@@ -259,12 +259,8 @@ public class Forgot_Password_Mobile extends Fragment {
 
         mobileNum = mobileNumInputEditText.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(mobileNum) && mobileNum.length() == 10){
+        return !TextUtils.isEmpty(mobileNum) && mobileNum.length() == 10;
 
-            return true;
-        }
-
-        return false;
     }
 
     @Override

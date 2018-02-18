@@ -22,7 +22,7 @@ public class EmptyReviewsStateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.reviews_empty_state_layout,container,false);
 
-        rateAndreviewButton = (Button) view.findViewById(R.id.empty_reviews_state_rateandreview_button);
+        rateAndreviewButton = view.findViewById(R.id.empty_reviews_state_rateandreview_button);
 
         return view;
 

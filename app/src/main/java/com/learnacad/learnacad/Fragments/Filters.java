@@ -91,24 +91,24 @@ public class Filters extends Fragment {
 //        }
 
 
-        subjectPhysicsCB = (CheckBox) view.findViewById(R.id.filterSubjectPhysicsCheckBox);
-        subjectMathsCB = (CheckBox) view.findViewById(R.id.filterSubjectMathsCheckBox);
-        subjectChemistryCB = (CheckBox) view.findViewById(R.id.filterSubjectChemistryCheckBox);
+        subjectPhysicsCB = view.findViewById(R.id.filterSubjectPhysicsCheckBox);
+        subjectMathsCB = view.findViewById(R.id.filterSubjectMathsCheckBox);
+        subjectChemistryCB = view.findViewById(R.id.filterSubjectChemistryCheckBox);
 
-        categoryMainsCB = (CheckBox) view.findViewById(R.id.filterCategoryMainsCheckBox);
-        categoryAdvancedCB = (CheckBox) view.findViewById(R.id.filterCategoryAdvancedCheckBox);
-        categorycbseCB = (CheckBox) view.findViewById(R.id.filterCategoryCBSECheckBox);
+        categoryMainsCB = view.findViewById(R.id.filterCategoryMainsCheckBox);
+        categoryAdvancedCB = view.findViewById(R.id.filterCategoryAdvancedCheckBox);
+        categorycbseCB = view.findViewById(R.id.filterCategoryCBSECheckBox);
 
-        classXIICB = (CheckBox) view.findViewById(R.id.filterClass12CheckBox);
-        classXICB = (CheckBox) view.findViewById(R.id.filterClass11CheckBox);
-        classXCB = (CheckBox) view.findViewById(R.id.filterClass10CheckBox);
+        classXIICB = view.findViewById(R.id.filterClass12CheckBox);
+        classXICB = view.findViewById(R.id.filterClass11CheckBox);
+        classXCB = view.findViewById(R.id.filterClass10CheckBox);
 
-        diffBeginnerCB = (CheckBox) view.findViewById(R.id.filterDifficultyBeginner);
-        diffIntermediateCB = (CheckBox) view.findViewById(R.id.filterDifficultyIntermediate);
-        diffAdvancedCB = (CheckBox) view.findViewById(R.id.filterDifficultyAdvanced);
+        diffBeginnerCB = view.findViewById(R.id.filterDifficultyBeginner);
+        diffIntermediateCB = view.findViewById(R.id.filterDifficultyIntermediate);
+        diffAdvancedCB = view.findViewById(R.id.filterDifficultyAdvanced);
 
-        mediumEnglishCB = (CheckBox) view.findViewById(R.id.filterMediumEnglish);
-        mediumHindiCB = (CheckBox) view.findViewById(R.id.filterMediumHindi);
+        mediumEnglishCB = view.findViewById(R.id.filterMediumEnglish);
+        mediumHindiCB = view.findViewById(R.id.filterMediumHindi);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(FiltersViewModel.class);
         setCheckedOptions();
@@ -117,7 +117,7 @@ public class Filters extends Fragment {
 
 
 
-        Button resetButton = (Button) view.findViewById(R.id.filterResetButton);
+        Button resetButton = view.findViewById(R.id.filterResetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,7 +140,7 @@ public class Filters extends Fragment {
         });
 
 
-        ImageButton cancelFilter = (ImageButton) view.findViewById(R.id.cancelFilterButton);
+        ImageButton cancelFilter = view.findViewById(R.id.cancelFilterButton);
         cancelFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +153,7 @@ public class Filters extends Fragment {
             }
         });
 
-        Button applyButton = (Button) view.findViewById(R.id.filterApplyButton);
+        Button applyButton = view.findViewById(R.id.filterApplyButton);
 
 
         final Bundle checkedItemsbundle = new Bundle();

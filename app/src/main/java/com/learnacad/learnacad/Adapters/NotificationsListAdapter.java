@@ -54,10 +54,10 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
         public NotificationsListViewHolder(View itemView) {
             super(itemView);
 
-            titleTextView = (TextView) itemView.findViewById(R.id.notificationsItemTitleTextView);
-            descTextView = (TextView) itemView.findViewById(R.id.notificationsItemDescriptionTextView);
-            viewBackGround = (RelativeLayout) itemView.findViewById(R.id.relativeLayout_background);
-            viewForeground = (RelativeLayout) itemView.findViewById(R.id.relativeLayout_Foreground);
+            titleTextView = itemView.findViewById(R.id.notificationsItemTitleTextView);
+            descTextView = itemView.findViewById(R.id.notificationsItemDescriptionTextView);
+            viewBackGround = itemView.findViewById(R.id.relativeLayout_background);
+            viewForeground = itemView.findViewById(R.id.relativeLayout_Foreground);
         }
     }
 

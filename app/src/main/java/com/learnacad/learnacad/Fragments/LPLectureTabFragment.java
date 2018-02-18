@@ -51,7 +51,7 @@ public class LPLectureTabFragment extends Fragment {
 
         int selectedPosition  = getActivity().getIntent().getIntExtra("selectedPosition",0);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.lecturePlayerLectureTabRecyclerView);
+        recyclerView = view.findViewById(R.id.lecturePlayerLectureTabRecyclerView);
         lectures = new ArrayList<>();
         lectures = (ArrayList<Lecture>) getActivity().getIntent().getSerializableExtra("lectureList");
         adapter = new LPLectureTabAdapter(getActivity(),lectures,selectedPosition);

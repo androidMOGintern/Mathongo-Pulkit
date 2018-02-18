@@ -38,6 +38,7 @@ import com.learnacad.learnacad.Fragments.Bookmarks_Fragment;
 import com.learnacad.learnacad.Fragments.LibraryCourseListFragment;
 import com.learnacad.learnacad.Fragments.Library_Fragment;
 import com.learnacad.learnacad.Fragments.MyCourses_Fragment;
+import com.learnacad.learnacad.Fragments.MyReferals_Fragment;
 import com.learnacad.learnacad.Fragments.NoInternetConnectionFragment;
 import com.learnacad.learnacad.Fragments.Resources_Fragments.ResourcesBaseFragment;
 import com.learnacad.learnacad.Models.MyCoursesEnrolled;
@@ -108,8 +109,8 @@ public class BaseActivity extends AppCompatActivity
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //checkForUpdate();
@@ -146,16 +147,16 @@ public class BaseActivity extends AppCompatActivity
         }
 
 
-        final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        final FrameLayout frameLayout = findViewById(R.id.content_frame);
 
-        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splashRelativeLayout);
+        final RelativeLayout relativeLayout = findViewById(R.id.splashRelativeLayout);
 
 //        drawer.setDrawerShadow();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView nameTextViewNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textViewNameNavigationDrawer);
+        TextView nameTextViewNavDrawer = navigationView.getHeaderView(0).findViewById(R.id.textViewNameNavigationDrawer);
 
         String name = student.getName();
         nameTextViewNavDrawer.setText(name + " ");
@@ -170,7 +171,7 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             for(int i = 0; i < navigationView.getMenu().size(); ++i){
@@ -372,6 +373,26 @@ public class BaseActivity extends AppCompatActivity
             }
             break;
 
+            case R.id.myReferalsNavigationDrawer:{
+
+                if(!isConnected()){
+
+                    new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+                            .setContentText("Connection Error!\nPlease try again later.")
+                            .setTitleText("Oops..!!")
+                            .show();
+                    return true;
+                }
+
+                FlurryAgent.logEvent("MyCourses_NavClicked");
+
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new MyReferals_Fragment());
+                ft.addToBackStack(null).commit();
+            }
+            break;
+
             case R.id.logoutNavigationDrawer:{
 
                 if(!isConnected()){
@@ -418,7 +439,7 @@ public class BaseActivity extends AppCompatActivity
             }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -58,9 +58,9 @@ public class ReviewsListViewAdapter extends ArrayAdapter<Reviews> {
             convertView = View.inflate(mContext,R.layout.reviews_item_layout,null);
 
 
-            TextView nameTextView = (TextView) convertView.findViewById(R.id.reviews_item_nameTextView);
-            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.reviews_item_ratingBar);
-            TextView descTextView = (TextView) convertView.findViewById(R.id.reviews_item_descriptionTextView);
+            TextView nameTextView = convertView.findViewById(R.id.reviews_item_nameTextView);
+            RatingBar ratingBar = convertView.findViewById(R.id.reviews_item_ratingBar);
+            TextView descTextView = convertView.findViewById(R.id.reviews_item_descriptionTextView);
             ReviewsViewHolder reviewsViewHolder = new ReviewsViewHolder(nameTextView,descTextView,ratingBar);
             convertView.setTag(reviewsViewHolder);
 

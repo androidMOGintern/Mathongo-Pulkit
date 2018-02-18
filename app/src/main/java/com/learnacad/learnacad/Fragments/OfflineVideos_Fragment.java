@@ -30,7 +30,7 @@ public class OfflineVideos_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.offline_feed_fragment_layout,container,false);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.offlineVideosRecyclerView);
+        recyclerView = v.findViewById(R.id.offlineVideosRecyclerView);
         titles = new ArrayList<>();
         offlineVideoListAdapter = new OfflineVideoListAdapter(getActivity(),titles);
         recyclerView.setAdapter(offlineVideoListAdapter);

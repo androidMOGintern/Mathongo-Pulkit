@@ -53,7 +53,7 @@ public class LCCLecturesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.lcclectures_fragment_layout, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.lcclecturesFragmentRecyclerView);
+        recyclerView = view.findViewById(R.id.lcclecturesFragmentRecyclerView);
         lectures = new ArrayList<>();
         course_id = getActivity().getIntent().getIntExtra("MINICOURSE_ID", 0);
         t = new Tutor();

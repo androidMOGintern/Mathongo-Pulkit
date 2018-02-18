@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        frameLayout = (FrameLayout) findViewById(R.id.content_login_frame);
+        frameLayout = findViewById(R.id.content_login_frame);
 
         Intent intent = getIntent();
         int whereToGo = intent.getIntExtra("LoginOrRegister",1);

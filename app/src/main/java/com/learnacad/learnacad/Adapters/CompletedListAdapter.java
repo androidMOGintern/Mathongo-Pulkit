@@ -66,7 +66,7 @@ public class CompletedListAdapter extends RecyclerView.Adapter<CompletedListAdap
         public CompletedListViewHolder(View itemView) {
             super(itemView);
 
-            textView = (TextView) itemView.findViewById(R.id.textView);
+            textView = itemView.findViewById(R.id.textView);
         }
     }
 }

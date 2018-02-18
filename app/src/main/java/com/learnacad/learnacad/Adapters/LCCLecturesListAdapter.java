@@ -136,10 +136,10 @@ public class LCCLecturesListAdapter extends RecyclerView.Adapter<LCCLecturesList
         public LCCLecturesListViewHolder(View itemView) {
             super(itemView);
 
-            titleTextView = (TextView) itemView.findViewById(R.id.lcclectures_item_titleTextView);
-            durationTextView = (TextView) itemView.findViewById(R.id.lcclectures_item_DurartionTextView);
-            numberTextview = (TextView) itemView.findViewById(R.id.lcclectures_item_number);
-            playButton = (ImageButton) itemView.findViewById(R.id.lcclectures_item_playButton);
+            titleTextView = itemView.findViewById(R.id.lcclectures_item_titleTextView);
+            durationTextView = itemView.findViewById(R.id.lcclectures_item_DurartionTextView);
+            numberTextview = itemView.findViewById(R.id.lcclectures_item_number);
+            playButton = itemView.findViewById(R.id.lcclectures_item_playButton);
 
         }
     }

@@ -26,7 +26,7 @@ public class NoFilterResultFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        Button clearFilters = (Button) view.findViewById(R.id.NoFilterResultFragment_ClearFiltersButton);
+        Button clearFilters = view.findViewById(R.id.NoFilterResultFragment_ClearFiltersButton);
 
         clearFilters.setOnClickListener(new View.OnClickListener() {
             @Override

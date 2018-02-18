@@ -29,7 +29,7 @@ public class Library_Examinations_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.library_examination_list_fragment_layout,container,false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.library_examinations_list_RecyclerView);
+        recyclerView = view.findViewById(R.id.library_examinations_list_RecyclerView);
         titlesList = new ArrayList<>();
         adapter = new Library_Top_level_Adapter(getActivity(),titlesList);
         recyclerView.setAdapter(adapter);

@@ -81,7 +81,7 @@ public class ChipsViewAdapeter extends RecyclerView.Adapter<ChipsViewAdapeter.Ch
         public ChipsViewHolder(View itemView) {
             super(itemView);
 
-            chipView = (ChipView) itemView.findViewById(R.id.chipItemLayout);
+            chipView = itemView.findViewById(R.id.chipItemLayout);
         }
     }
 

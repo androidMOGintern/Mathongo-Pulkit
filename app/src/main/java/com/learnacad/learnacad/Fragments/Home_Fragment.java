@@ -30,10 +30,10 @@ public class Home_Fragment extends Fragment{
 
 
         v = inflater.inflate(R.layout.fragment_home,container,false);
-        viewPager = (ViewPager) v.findViewById(R.id.viewPager);
+        viewPager = v.findViewById(R.id.viewPager);
 
 
-        tabLayout = (TabLayout) v.findViewById(R.id.tablayout);
+        tabLayout = v.findViewById(R.id.tablayout);
 
         for(int i = 0 ; i < 4; ++i){
 

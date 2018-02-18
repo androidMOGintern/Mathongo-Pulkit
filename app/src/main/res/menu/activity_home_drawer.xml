@@ -1,63 +1,68 @@
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
 
- <!-- <item
-      android:title="Home"
-      android:icon="@drawable/homeicon"
-      android:id="@+id/homeNavigationDrawer"/>-->
+        <!-- <item
+             android:title="Home"
+             android:icon="@drawable/homeicon"
+             android:id="@+id/homeNavigationDrawer"/>-->
 
-    <item
-        android:title="Library"
-        android:icon="@drawable/bookgray"
-        android:id="@+id/libraryNavigationDrawer"/>
+        <item
+            android:id="@+id/libraryNavigationDrawer"
+            android:icon="@drawable/bookgray"
+            android:title="Library" />
 
-    <item
-        android:title="My Courses"
-        android:icon="@drawable/mycoursesicon"
-        android:id="@+id/myCoursesNavigationDrawer"/>
-
-
-    <item
-        android:title="My Bookmarks"
-        android:icon="@drawable/mybookmarksicon"
-        android:id="@+id/mybookmarksNavigationDrawer"/>
-
-    <item
-        android:title="Resources"
-        android:icon="@drawable/new_resources_icon"
-        android:id="@+id/resourcesNavigationDrawer"/>
+        <item
+            android:id="@+id/myCoursesNavigationDrawer"
+            android:icon="@drawable/mycoursesicon"
+            android:title="My Courses" />
 
 
-    <!--<item-->
+        <item
+            android:id="@+id/mybookmarksNavigationDrawer"
+            android:icon="@drawable/mybookmarksicon"
+            android:title="My Bookmarks" />
+
+        <item
+            android:id="@+id/myReferalsNavigationDrawer"
+            android:icon="@drawable/mybookmarksicon"
+            android:title="Referals" />
+
+
+        <item
+            android:id="@+id/resourcesNavigationDrawer"
+            android:icon="@drawable/new_resources_icon"
+            android:title="Resources" />
+
+
+        <!--<item-->
         <!--android:title="Teachers"-->
         <!--android:icon="@drawable/accountgray"-->
         <!--android:id="@+id/teachersNavigationDrawer"/>-->
 
 
-    <!--<item-->
+        <!--<item-->
         <!--android:title="Events"-->
         <!--android:icon="@drawable/calendargray"-->
         <!--android:id="@+id/eventsNavigationDrawer"/>-->
 
 
-  <!--  <item
-        android:title="Downloads"
-        android:icon="@drawable/downloadsicon"
-        android:id="@+id/downloadsNavigationDrawer"/>-->
+        <!--  <item
+              android:title="Downloads"
+              android:icon="@drawable/downloadsicon"
+              android:id="@+id/downloadsNavigationDrawer"/>-->
 
 
-    <!--<item-->
+        <!--<item-->
         <!--android:title="Settings"-->
         <!--android:icon="@drawable/settingsicon"-->
         <!--android:id="@+id/settingsNavigationDrawer"/>-->
 
 
-    <item
-        android:title="Logout"
-        android:icon="@drawable/logouticon"
-        android:id="@+id/logoutNavigationDrawer"/>
+        <item
+            android:id="@+id/logoutNavigationDrawer"
+            android:icon="@drawable/logouticon"
+            android:title="Logout" />
 
     </group>
 

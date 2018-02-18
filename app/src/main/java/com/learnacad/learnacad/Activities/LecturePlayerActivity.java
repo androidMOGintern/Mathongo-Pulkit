@@ -29,6 +29,11 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.learnacad.learnacad.Adapters.LecturePlayerViewPagerAdapter;
 import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.Models.SessionManager;
@@ -46,7 +51,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.orm.SugarRecord.listAll;
 
-public class LecturePlayerActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
+public class LecturePlayerActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
     @Override
     protected void onStart() {
@@ -71,8 +76,11 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
     int currPosition;
     ProgressBar progressBar;
     ArrayList<Lecture> lectures;
-    static TextView aTitletextView,aDescptextView,teachersNametextView,teachersDesctextView,adurationTextView;
-    private String[] tabTitles = {"LECTURES", "COMMENTS","DOUBTS"};
+    static TextView aTitletextView, aDescptextView, teachersNametextView, teachersDesctextView, adurationTextView;
+    private String[] tabTitles = {"LECTURES", "COMMENTS", "DOUBTS"};
+    FirebaseDatabase database;
+    DatabaseReference myRootref;
+    Integer coins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +92,9 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
 
-        if(!isConnected()){
+        if (!isConnected()) {
 
-            new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
@@ -96,16 +104,58 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         lectures = new ArrayList<>();
         Intent intent = getIntent();
         Lecture selectedLecture = (Lecture) intent.getSerializableExtra("selectedLecture");
-    //    tutor = (Tutor) intent.getSerializableExtra("selectedTutor");
-        final int position = intent.getIntExtra("selectedPosition",0);
+        //    tutor = (Tutor) intent.getSerializableExtra("selectedTutor");
+        final int position = intent.getIntExtra("selectedPosition", 0);
         lectures = (ArrayList<Lecture>) intent.getSerializableExtra("lectureList");
 
+        database = FirebaseDatabase.getInstance();
+        myRootref = database.getReference("users/PUL9582");
+        myRootref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                coins = dataSnapshot.child("coins").getValue(Integer.class);
+                Log.i("TAG", "onDataChange: "+coins);
 
-        aTitletextView = (TextView) findViewById(R.id.attachedLayoutTitleTextView);
-        aDescptextView = (TextView) findViewById(R.id.attachedLayoutDescriptionTextView);
-        adurationTextView = (TextView) findViewById(R.id.attachedLayoutDurationTextView);
-        upVoteButton = (Button) findViewById(R.id.attachedUpvotesButton);
-        bookmarkButton = (Button) findViewById(R.id.attachedBookmarkButton);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Are you sure?")
+                    .setContentText("Your 5 Coins Would Be Deducted for watching this video")
+                    .setCancelText("No,Dont Continue")
+                    .setConfirmText("Yes,Continue")
+                    .showCancelButton(true)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            myRootref.child("coins").setValue(coins-5);
+                            YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+                            youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, LecturePlayerActivity.this);
+                            sDialog.dismissWithAnimation();
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.cancel();
+                            onBackPressed();
+
+                        }
+                    })
+                    .show();
+
+
+        aTitletextView = findViewById(R.id.attachedLayoutTitleTextView);
+        aDescptextView = findViewById(R.id.attachedLayoutDescriptionTextView);
+        adurationTextView = findViewById(R.id.attachedLayoutDurationTextView);
+        upVoteButton = findViewById(R.id.attachedUpvotesButton);
+        bookmarkButton = findViewById(R.id.attachedBookmarkButton);
 //        teachersNametextView = (TextView) findViewById(R.id.lecturePlayerTeacherNameTextView);
 //        teachersDesctextView = (TextView) findViewById(R.id.lecturePlayerTeacherDescriptionTextView);
 //
@@ -116,10 +166,10 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
         setVideoCode(selectedLecture.getUrl());
 
-        viewPager = (ViewPager) findViewById(R.id.lecturePlayerViewPager);
-        tabLayout = (TabLayout) findViewById(R.id.lecturePlayerTabLayout);
+        viewPager = findViewById(R.id.lecturePlayerViewPager);
+        tabLayout = findViewById(R.id.lecturePlayerTabLayout);
 
-        for(int i = 0; i < 1; ++i){
+        for (int i = 0; i < 1; ++i) {
 
             tabLayout.addTab(tabLayout.newTab().setText(tabTitles[i]));
         }
@@ -144,23 +194,22 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             }
         });
 
-        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
-        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY,this);
+//        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+//        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, this);
 
         LinearLayout linearLayout = (LinearLayout) tabLayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(Color.BLACK);
-        drawable.setSize(2,1);
+        drawable.setSize(2, 1);
         drawable.setShape(GradientDrawable.LINE);
         linearLayout.setDividerPadding(10);
         linearLayout.setDividerDrawable(drawable);
 
 
-
 //        final Button shareButton = (Button) findViewById(R.id.attachedshareButton);
 //        final Button downloadsButton = (Button) findViewById(R.id.attachedDownloadsButton);
-        final Button reportButton = (Button) findViewById(R.id.attachedUReportButton);
+        final Button reportButton = findViewById(R.id.attachedUReportButton);
 
 
         reportButton.setOnClickListener(new View.OnClickListener() {
@@ -169,11 +218,11 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(LecturePlayerActivity.this);
                 LayoutInflater inflator = LecturePlayerActivity.this.getLayoutInflater();
-                final View dialogView = inflator.inflate(R.layout.report_error_dialog_layout,null);
+                final View dialogView = inflator.inflate(R.layout.report_error_dialog_layout, null);
                 builder.setView(dialogView);
-                final EditText errorEditText = (EditText) dialogView.findViewById(R.id.editTextReportErrorDialog);
-                Button submitButton = (Button) dialogView.findViewById(R.id.submitButtonReportErrorDialog);
-                ImageButton closeButton = (ImageButton) dialogView.findViewById(R.id.imageButtonReportErrorDialog);
+                final EditText errorEditText = dialogView.findViewById(R.id.editTextReportErrorDialog);
+                Button submitButton = dialogView.findViewById(R.id.submitButtonReportErrorDialog);
+                ImageButton closeButton = dialogView.findViewById(R.id.imageButtonReportErrorDialog);
 
 
                 final AlertDialog dialog = builder.create();
@@ -184,67 +233,67 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                     @Override
                     public void onClick(View v) {
 
-                        FlurryAgent.logEvent("Report_"+ lectures.get(position).getName() + "Clicked");
+                        FlurryAgent.logEvent("Report_" + lectures.get(position).getName() + "Clicked");
 
 
                         dialog.cancel();
 
-                            final int lesson_id = lectures.get(currPosition).getLecture_id();
-                            List<SessionManager> sessionManagers = listAll(SessionManager.class);
+                        final int lesson_id = lectures.get(currPosition).getLecture_id();
+                        List<SessionManager> sessionManagers = listAll(SessionManager.class);
                         progressBar.setVisibility(View.VISIBLE);
 
                         String reportError = errorEditText.toString().trim();
 
-                            if(reportError.isEmpty()) {
+                        if (reportError.isEmpty()) {
 
 
-                                AndroidNetworking.post(Api_Urls.BASE_URL + "api/lessons/" + lesson_id + "/report")
-                                        .addHeaders("Authorization", "Bearer " + sessionManagers.get(0).getToken())
-                                        .addUrlEncodeFormBodyParameter("description",reportError)
-                                        .build()
-                                        .getAsJSONObject(new JSONObjectRequestListener() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
+                            AndroidNetworking.post(Api_Urls.BASE_URL + "api/lessons/" + lesson_id + "/report")
+                                    .addHeaders("Authorization", "Bearer " + sessionManagers.get(0).getToken())
+                                    .addUrlEncodeFormBodyParameter("description", reportError)
+                                    .build()
+                                    .getAsJSONObject(new JSONObjectRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
 
-                                                try {
-                                                    String success = response.getString("success");
-                                                    if (success.contentEquals("true")) {
+                                            try {
+                                                String success = response.getString("success");
+                                                if (success.contentEquals("true")) {
 
-                                                        new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                                                .setTitleText("Reported Successfully!")
-                                                                .setContentText("Thank you for improving us.")
-                                                                .show();
-                                                    }
-
-                                                } catch (JSONException e) {
-                                                    new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                            .setContentText("There seems a problem with us.\nPlease try again later.(101LP_RE)")
-                                                            .setTitleText("Oops..!!")
+                                                    new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                            .setTitleText("Reported Successfully!")
+                                                            .setContentText("Thank you for improving us.")
                                                             .show();
                                                 }
 
-                                                progressBar.setVisibility(View.GONE);
-                                            }
-
-                                            @Override
-                                            public void onError(ANError anError) {
-                                                new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                                        .setContentText("Connection Error!\nPlease try again later.(202LP_RE)")
+                                            } catch (JSONException e) {
+                                                new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                        .setContentText("There seems a problem with us.\nPlease try again later.(101LP_RE)")
                                                         .setTitleText("Oops..!!")
                                                         .show();
-                                                progressBar.setVisibility(View.GONE);
                                             }
-                                        });
-                            }else{
+
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+
+                                        @Override
+                                        public void onError(ANError anError) {
+                                            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                    .setContentText("Connection Error!\nPlease try again later.(202LP_RE)")
+                                                    .setTitleText("Oops..!!")
+                                                    .show();
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    });
+                        } else {
 
 
-                                new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
-                                        .setContentText("Sorry nothing to be submitted.")
-                                        .setTitleText("Oops...")
-                                        .show();
+                            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setContentText("Sorry nothing to be submitted.")
+                                    .setTitleText("Oops...")
+                                    .show();
 
-                                progressBar.setVisibility(View.GONE);
-                            }
+                            progressBar.setVisibility(View.GONE);
+                        }
                         progressBar.setVisibility(View.GONE);
                     }
                 });
@@ -277,9 +326,9 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             @Override
             public void onClick(View view) {
 
-                FlurryAgent.logEvent("Upvote_"+ lectures.get(position).getName() + "Clicked");
+                FlurryAgent.logEvent("Upvote_" + lectures.get(position).getName() + "Clicked");
 
-                if(!lectures.get(currPosition).isUpVoted()) {
+                if (!lectures.get(currPosition).isUpVoted()) {
 
                     final int lesson_id = lectures.get(currPosition).getLecture_id();
                     List<SessionManager> sessionManagers = listAll(SessionManager.class);
@@ -306,7 +355,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                         }
 
                                     } catch (JSONException e) {
-                                        new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                                        new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                 .setContentText("There seems a problem with us.\nPlease try again later.(101LP_UP)")
                                                 .setTitleText("Oops..!!")
                                                 .show();
@@ -317,7 +366,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                                 @Override
                                 public void onError(ANError anError) {
-                                    new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                                    new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                             .setContentText("Connection Error!\nPlease try again later.(202LP_UP)")
                                             .setTitleText("Oops..!!")
                                             .show();
@@ -331,7 +380,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             @Override
             public void onClick(View view) {
 
-                if(!lectures.get(currPosition).isBookmarked()) {
+                if (!lectures.get(currPosition).isBookmarked()) {
 
                     final int lesson_id = lectures.get(currPosition).getLecture_id();
                     List<SessionManager> sessionManagers = listAll(SessionManager.class);
@@ -355,7 +404,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                                         }
 
                                     } catch (JSONException e) {
-                                        new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                                        new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                 .setContentText("There seems a problem with us.\nPlease try again later.(101LP_BO)")
                                                 .setTitleText("Oops..!!")
                                                 .show();
@@ -367,7 +416,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                                 @Override
                                 public void onError(ANError anError) {
-                                    new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                                    new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                             .setContentText("Connection Error!\nPlease try again later.(202LP_BO)")
                                             .setTitleText("Oops..!!")
                                             .show();
@@ -399,7 +448,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 //        });
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -412,48 +461,47 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
     private void setVideoCode(String url) {
 
-      int slashIndex = url.lastIndexOf("/");
+        int slashIndex = url.lastIndexOf("/");
 
 
-        Log.d("youtubelink",url);
+        Log.d("youtubelink", url);
         StringBuilder builder = new StringBuilder();
-        builder.append(url,slashIndex + 1,url.lastIndexOf("?"));
-        Log.d("youtubelink",builder.toString());
+        builder.append(url, slashIndex + 1, url.lastIndexOf("?"));
+        Log.d("youtubelink", builder.toString());
         YOUTUBE_CODE = builder.toString();
     }
 
-    public void setDataLecturePlayer(int postion){
+    public void setDataLecturePlayer(int postion) {
 
-            currPosition = postion;
+        currPosition = postion;
 
-            aTitletextView.setText(lectures.get(postion).getName());
-            aDescptextView.setText(lectures.get(postion).getDescription());
-            adurationTextView.setText(lectures.get(postion).getDuration());
+        aTitletextView.setText(lectures.get(postion).getName());
+        aDescptextView.setText(lectures.get(postion).getDescription());
+        adurationTextView.setText(lectures.get(postion).getDuration());
 
-                int numOfUpVotes = lectures.get(postion).getUpvotes();
-            if(numOfUpVotes > 0){
+        int numOfUpVotes = lectures.get(postion).getUpvotes();
+        if (numOfUpVotes > 0) {
 
-                upVoteButton.setText(numOfUpVotes + " Upvotes");
-            }else{
+            upVoteButton.setText(numOfUpVotes + " Upvotes");
+        } else {
 
-                upVoteButton.setText("0 Upvotes");
-            }
-            setVideoCode(lectures.get(postion).getUrl());
+            upVoteButton.setText("0 Upvotes");
+        }
+        setVideoCode(lectures.get(postion).getUrl());
 
 
-
-        if(lectures.get(postion).isUpVoted()){
-            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.new_upvoteactive_layer_list_drawable,0,0);
-        }else{
+        if (lectures.get(postion).isUpVoted()) {
+            upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.new_upvoteactive_layer_list_drawable, 0, 0);
+        } else {
 
             checkUpvoted(postion);
         }
 
-        if(lectures.get(postion).isBookmarked()){
+        if (lectures.get(postion).isBookmarked()) {
             bookmarkButton.setBackgroundResource(R.drawable.enrolled_button_library_shape);
             bookmarkButton.setText("Bookmarked");
 
-        }else{
+        } else {
 
             checkBookmarked(postion);
         }
@@ -466,7 +514,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         List<SessionManager> sessionManagers = listAll(SessionManager.class);
 
         AndroidNetworking.get(Api_Urls.BASE_URL + "api/lessons/" + lesson_id + "/isBookmarked")
-                .addHeaders("Authorization","Bearer " + sessionManagers.get(0).getToken())
+                .addHeaders("Authorization", "Bearer " + sessionManagers.get(0).getToken())
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -474,7 +522,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                         try {
                             String success = response.getString("isBookmarked");
-                            if(success.contentEquals("true")){
+                            if (success.contentEquals("true")) {
 
                                 lectures.get(postion).setBookmarked(true);
                                 bookmarkButton.setBackgroundResource(R.drawable.enrolled_button_library_shape);
@@ -482,7 +530,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                             }
 
                         } catch (JSONException e) {
-                            new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                     .setContentText("There seems a problem with us.\nPlease try again later.(101LP_IB)")
                                     .setTitleText("Oops..!!")
                                     .show();
@@ -493,7 +541,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                     @Override
                     public void onError(ANError anError) {
-                        new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                        new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setContentText("Connection Error!\nPlease try again later.(202LP_IB)")
                                 .setTitleText("Oops..!!")
                                 .show();
@@ -501,13 +549,13 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                 });
     }
 
-    public void newDataLectureClicked(int position){
+    public void newDataLectureClicked(int position) {
 
         Intent intent = new Intent(this, LecturePlayerActivity.class);
-        intent.putExtra("selectedLecture",lectures.get(position));
-        intent.putExtra("selectedPosition",position);
+        intent.putExtra("selectedLecture", lectures.get(position));
+        intent.putExtra("selectedPosition", position);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra("lectureList",lectures);
+        intent.putExtra("lectureList", lectures);
         startActivity(intent);
         this.finish();
     }
@@ -518,7 +566,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
         player = youTubePlayer;
 
-        if(!b){
+        if (!b) {
 
             player.loadVideo(YOUTUBE_CODE);
         }
@@ -526,18 +574,17 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
     }
 
 
-
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
         final int REQUEST_CODE = 1;
 
-        if(youTubeInitializationResult.isUserRecoverableError()){
+        if (youTubeInitializationResult.isUserRecoverableError()) {
 
-            youTubeInitializationResult.getErrorDialog(this,REQUEST_CODE);
-        }else{
+            youTubeInitializationResult.getErrorDialog(this, REQUEST_CODE);
+        } else {
 
-            new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                     .setContentText("Connection Error!\nPlease try again later.")
                     .setTitleText("Oops..!!")
                     .show();
@@ -545,24 +592,24 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
     }
 
 
-    private void checkUpvoted(final int pos){
+    private void checkUpvoted(final int pos) {
 
         int lesson_id = lectures.get(pos).getLecture_id();
         List<SessionManager> sessionManagers = listAll(SessionManager.class);
 
         AndroidNetworking.get(Api_Urls.BASE_URL + "api/lessons/" + lesson_id + "/isUpvoted")
-                .addHeaders("Authorization","Bearer " + sessionManagers.get(0).getToken())
+                .addHeaders("Authorization", "Bearer " + sessionManagers.get(0).getToken())
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         try {
-                           String success = response.getString("success");
-                            if(success.contentEquals("true")){
+                            String success = response.getString("success");
+                            if (success.contentEquals("true")) {
 
                                 lectures.get(pos).setUpVoted(true);
-                                upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.new_upvoteactive_layer_list_drawable,0,0);
+                                upVoteButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.new_upvoteactive_layer_list_drawable, 0, 0);
                                 int numOfUpVotes = lectures.get(currPosition).getUpvotes();
                                 ++numOfUpVotes;
                                 lectures.get(currPosition).setUpvotes(numOfUpVotes);
@@ -570,7 +617,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
                             }
 
                         } catch (JSONException e) {
-                            new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                     .setContentText("There seems a problem with us.\nPlease try again later.(101LP_IU)")
                                     .setTitleText("Oops..!!")
                                     .show();
@@ -580,7 +627,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
 
                     @Override
                     public void onError(ANError anError) {
-                        new SweetAlertDialog(LecturePlayerActivity.this,SweetAlertDialog.ERROR_TYPE)
+                        new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setContentText("Connection Error!\nPlease try again later.(202LP_IU)")
                                 .setTitleText("Oops..!!")
                                 .show();

@@ -29,7 +29,7 @@ public class CompletedMyCoursesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.completed_mycourses_fragment_layout,container,false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.completedRecyclerViewList);
+        recyclerView = v.findViewById(R.id.completedRecyclerViewList);
         titles = new ArrayList<>();
         completedListAdapter = new CompletedListAdapter(getActivity(),titles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
