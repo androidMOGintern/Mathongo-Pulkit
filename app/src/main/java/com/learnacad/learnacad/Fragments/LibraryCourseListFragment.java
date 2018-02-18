@@ -35,6 +35,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -181,15 +182,17 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                MenuItem item = menu.findItem(R.id.action_search);
-//                searchView = (SearchView) item.getActionView();
+                MenuItem item = menu.findItem(R.id.action_search);
+                searchView = (SearchView) item.getActionView();
+                item.setVisible(true);
+                searchView.setIconified(false);
+                floatingActionButton.hide();
 //                item.expandActionView();
 //                searchView.setIconified(true);
 //                searchView.onActionViewExpanded();
 //                MenuItemCompat.expandActionView(item);
 //                item.expandActionView();
 //                getActivity().invalidateOptionsMenu();
-
 
 
             }
@@ -263,8 +266,8 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
         menu.clear();
         inflater.inflate(R.menu.menu_library, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        item.setVisible(true);
+        final MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
         searchView = (SearchView) menu.findItem(R.id.action_search)
@@ -272,6 +275,23 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                item.setVisible(false);
+                searchView.setIconified(true);
+                //Clear query
+                searchView.setQuery("", false);
+                //Collapse the action view
+                searchView.onActionViewCollapsed();
+                //Collapse the search widget
+                item.collapseActionView();
+
+                floatingActionButton.show();
+            }
+        });
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
