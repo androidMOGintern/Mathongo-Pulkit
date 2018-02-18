@@ -60,6 +60,7 @@ public class FlurryAnalytics extends Application {
         @Override
         public void notificationReceived(OSNotification notification) {
 
+            JSONObject data = notification.payload.additionalData;
 
             title = notification.payload.title;
             body = notification.payload.body;
@@ -68,6 +69,16 @@ public class FlurryAnalytics extends Application {
                 messages = new Messages(title, body, false);
             else
                 messages = new Messages(title, body, false, imgurl);
+            if (data != null) {
+
+                messages.setIntent(data.optString("intent", null));
+                messages.setMinicourse_id(Integer.valueOf(data.optString("MINICOURSE_ID", "0")));
+                messages.setProcess_id(Integer.valueOf(data.optString("MINICOURSE_ID", "0")) + "A");
+                messages.setMaterial_name(data.optString("MATERIAL_NAME", null));
+                messages.setCategory_level_I(data.optString("CATEGORY_1", null));
+                messages.setCategory_level_II(data.optString("CATEGORY_2", null));
+
+            }
 
             addtodatabase();
         }
@@ -110,25 +121,40 @@ public class FlurryAnalytics extends Application {
             String process_id = null;
             String material_name = null;
             Integer minicourse_id = null;
+            String category_level_I = null;
+            String category_level_II = null;
             final Intent resultIntent;
             if (data != null) {
                 customKey = data.optString("intent", null);
-                minicourse_id = Integer.valueOf(data.optString("MINICOURSE_ID"));
+                minicourse_id = Integer.valueOf(data.optString("MINICOURSE_ID", "0"));
                 process_id = minicourse_id + "A";
                 material_name = data.optString("MATERIAL_NAME");
+                category_level_I = data.optString("CATEGORY_1");
+                category_level_II = data.optString("CATEGORY_2");
             }
             if (customKey != null) {
                 resultIntent = new Intent(customKey);
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
                 resultIntent.putExtra("MINICOURSE_ID", minicourse_id);
-                if (material_name != null) {
+                if (material_name != null && category_level_I == null) {
                     Material m = new Material(material_name, minicourse_id);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("Material", m);
                     resultIntent.putExtras(bundle);
-                    resultIntent.putExtra("TO_SHOW","MATERIAL");
+                    resultIntent.putExtra("TO_SHOW", "MATERIAL");
+                }
+                if (material_name != null && category_level_I != null) {
+                    Material m = new Material(material_name, minicourse_id);
+                    Bundle bundle = new Bundle();
+                    m.setCategory_Level_I(category_level_I);
+                    if (category_level_II != null)
+                        m.setCategory_Level_II(category_level_II);
+                    bundle.putSerializable("Material", m);
+                    resultIntent.putExtras(bundle);
+                    resultIntent.putExtra("TO_SHOW", "RESOURCE");
                 } else {
                     resultIntent.putExtra("PROCESS_ID", process_id);
+//                    resultIntent.putExtra("LECTURE",1);
 
                 }
             } else {

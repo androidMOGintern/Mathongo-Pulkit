@@ -108,47 +108,47 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         final int position = intent.getIntExtra("selectedPosition", 0);
         lectures = (ArrayList<Lecture>) intent.getSerializableExtra("lectureList");
 
-        database = FirebaseDatabase.getInstance();
-        myRootref = database.getReference("users/PUL9582");
-        myRootref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                coins = dataSnapshot.child("coins").getValue(Integer.class);
-                Log.i("TAG", "onDataChange: "+coins);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Your 5 Coins Would Be Deducted for watching this video")
-                    .setCancelText("No,Dont Continue")
-                    .setConfirmText("Yes,Continue")
-                    .showCancelButton(true)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            myRootref.child("coins").setValue(coins-5);
-                            YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
-                            youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, LecturePlayerActivity.this);
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.cancel();
-                            onBackPressed();
-
-                        }
-                    })
-                    .show();
+//        database = FirebaseDatabase.getInstance();
+//        myRootref = database.getReference("users/PUL9582");
+//        myRootref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                coins = dataSnapshot.child("coins").getValue(Integer.class);
+//                Log.i("TAG", "onDataChange: "+coins);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+//            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+//                    .setTitleText("Are you sure?")
+//                    .setContentText("Your 5 Coins Would Be Deducted for watching this video")
+//                    .setCancelText("No,Dont Continue")
+//                    .setConfirmText("Yes,Continue")
+//                    .showCancelButton(true)
+//                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sDialog) {
+//                            myRootref.child("coins").setValue(coins-5);
+//                            YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+//                            youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, LecturePlayerActivity.this);
+//                            sDialog.dismissWithAnimation();
+//                        }
+//                    })
+//                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sDialog) {
+//                            sDialog.cancel();
+//                            onBackPressed();
+//
+//                        }
+//                    })
+//                    .show();
 
 
         aTitletextView = findViewById(R.id.attachedLayoutTitleTextView);
@@ -194,8 +194,8 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             }
         });
 
-//        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
-//        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, this);
+        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, this);
 
         LinearLayout linearLayout = (LinearLayout) tabLayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);

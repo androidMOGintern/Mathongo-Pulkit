@@ -91,7 +91,7 @@ public class MaterialViewActivity extends AppCompatActivity {
         assert bundle != null;
         Material material = (Material) bundle.getSerializable("Material");
 
-        Log.i(TAG, "onCreate: "+material.getName()+"  "+material.getMinicourseId()+"  "+material.getId());
+        Log.i(TAG, "onCreate: "+material.getName()+"  "+"  "+material.getCategory_Level_I()+material.getCategory_Level_II()+material.getMinicourseId());
 
 
         root = findViewById(R.id.rootView);

@@ -64,6 +64,10 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FlurryAgent.onStartSession(this);
+        if(setfragment != null)
+        viewPager.setCurrentItem(setfragment);
+        Log.i("TAG", "onStart: "+setfragment);
+
     }
 
     @Override
@@ -87,6 +91,7 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
     private TextView titleTextView,followersTextView,descriptionTextView,previousToCurr;
     private RatingBar ratingBar;
     private static String[] tabTitles = {"DETAILS", "LECTURES", "MATERIALS", "REVIEW"};
+    Integer setfragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +113,11 @@ public class LibraryCourseContentActivity extends AppCompatActivity {
         intent = getIntent();
         course_id = intent.getIntExtra("MINICOURSE_ID",0);
         processId = intent.getStringExtra("PROCESS_ID");
+        setfragment = intent.getIntExtra("LECTURE",0);
+
         progressBar = findViewById(R.id.pb);
         progressBar.setIndeterminate(true);
-
+        Log.i("TAG", "onCreate: "+course_id);
         bundle = new Bundle();
         fetchData();
 
