@@ -67,7 +67,7 @@
             android:label=""
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.example.pulkit_mac.mathongo_TARGET_NOTIFICATION" />
+                <action android:name="com.learnacad.learnacad.Library" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -78,7 +78,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >
         <intent-filter>
-            <action android:name="com.example.pulkit_mac.mathongo_TARGET_NOTIFICATION_1" />
+            <action android:name="com.learnacad.learnacad.Lecture" />
 
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
@@ -92,7 +92,7 @@
 
         <activity android:name=".Activities.MaterialViewActivity">
             <intent-filter>
-                <action android:name="com.example.pulkit_mac.mathongo_TARGET_NOTIFICATION_2" />
+                <action android:name="com.learnacad.learnacad.Material" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

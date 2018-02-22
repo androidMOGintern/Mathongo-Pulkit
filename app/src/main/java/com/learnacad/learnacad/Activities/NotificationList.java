@@ -1,5 +1,6 @@
 package com.learnacad.learnacad.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import android.os.AsyncTask;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -22,17 +24,31 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.learnacad.learnacad.Adapters.NotificationAdapter;
+import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.Models.Material;
 import com.learnacad.learnacad.Models.Messages;
+import com.learnacad.learnacad.Models.SessionManager;
+import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.R;
 import com.orm.SugarRecord;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static android.content.ContentValues.TAG;
+import static com.orm.SugarRecord.listAll;
 
 public class NotificationList extends AppCompatActivity {
 
@@ -48,6 +64,8 @@ public class NotificationList extends AppCompatActivity {
     CoordinatorLayout rootlayout;
     int curpos = 5;
     int lastVisibleItemId;
+    ArrayList<Lecture> lectures;
+
 
 
     @Override
@@ -61,6 +79,7 @@ public class NotificationList extends AppCompatActivity {
         if (tempList.size() < 5) {
             curpos = tempList.size();
         }
+        lectures = new ArrayList<>();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Notifications");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -154,11 +173,12 @@ public class NotificationList extends AppCompatActivity {
         for (int i = tempList.size() - 1; i > tempList.size() - curpos - 1; i--)
             mList.add(tempList.get(i));
         mNotificationAdapter = new NotificationAdapter(this, mList, new NotificationAdapter.NotificationListener() {
+            @SuppressLint("StaticFieldLeak")
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, final int position) {
                 Log.i(TAG, "onItemClick: " + mList.get(position).getIntent());
                 if (mList.get(position).getIntent() != null) {
-                    Intent resultIntent;
+                    final Intent resultIntent;
                     resultIntent = new Intent(mList.get(position).getIntent());
                     resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
                     resultIntent.putExtra("MINICOURSE_ID", mList.get(position).getMinicourse_id());
@@ -168,6 +188,7 @@ public class NotificationList extends AppCompatActivity {
                         bundle.putSerializable("Material", m);
                         resultIntent.putExtras(bundle);
                         resultIntent.putExtra("TO_SHOW", "MATERIAL");
+                        startActivity(resultIntent);
                     }
                     if (mList.get(position).getMaterial_name() != null && mList.get(position).getCategory_level_I() != null) {
                         Material m = new Material(mList.get(position).getMaterial_name(), mList.get(position).getMinicourse_id());
@@ -178,10 +199,31 @@ public class NotificationList extends AppCompatActivity {
                         bundle.putSerializable("Material", m);
                         resultIntent.putExtras(bundle);
                         resultIntent.putExtra("TO_SHOW", "RESOURCE");
+                        startActivity(resultIntent);
+                    }
+                    if (mList.get(position).getLecture_id()) {
+//                        new AsyncTask<Void, Void, Void>() {
+//                            @Override
+//                            protected Void doInBackground(Void... voids) {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            protected void onPostExecute(Void aVoid) {
+//                                super.onPostExecute(aVoid);
+
+//                            }
+//                        }.execute();
+                        fetchdata(mList.get(position).getMinicourse_id(),resultIntent);
+
+
                     } else {
                         resultIntent.putExtra("PROCESS_ID", mList.get(position).getProcess_id());
+                        startActivity(resultIntent);
                     }
-                    startActivity(resultIntent);
+
+                }else {
+                    Toast.makeText(NotificationList.this, "Nothing To Open", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -207,6 +249,62 @@ public class NotificationList extends AppCompatActivity {
             }
         };
 
+
+    }
+
+    private void fetchdata(Integer minicourse_id, final Intent resultIntent) {
+
+        Log.i(TAG, "fetchdata: " + minicourse_id);
+        List<SessionManager> session = listAll(SessionManager.class);
+        AndroidNetworking.get(Api_Urls.BASE_URL + "api/minicourses/" + minicourse_id)
+                .addHeaders("Authorization", "bearer" + session.get(0).getToken())
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            JSONArray lessons = response.getJSONArray("lessons");
+
+                            for (int i = 0; i < lessons.length(); ++i) {
+
+                                JSONObject lesson = lessons.getJSONObject(i);
+                                String lesson_name = lesson.getString("name");
+                                String url = lesson.getString("videoUrl");
+                                String lesson_duration = lesson.getString("duration");
+                                int lesson_id = lesson.getInt("id");
+                                String lesson_description = lesson.getString("description");
+                                int upvotes = lesson.getInt("upvotes");
+
+                                Lecture lecture = new Lecture(lesson_id, lesson_name, url, lesson_duration, lesson_description, upvotes, false, false);
+                                lectures.add(lecture);
+                                Log.i(TAG, "onResponse:Api has been hit in notification list" + lecture);
+                                resultIntent.putExtra("lectureList", lectures);
+                                resultIntent.putExtra("selectedPosition", lectures.size()-1);
+                                resultIntent.putExtra("selectedLecture", lectures.get(lectures.size()-1));
+                                startActivity(resultIntent);
+
+                            }
+
+                        } catch (JSONException e) {
+                            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                    .setContentText("There seems a problem with us.\nPlease try again later.(101LC_LF_MI)")
+                                    .setTitleText("Oops..!!")
+                                    .show();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                .setContentText("Connection Error!\nPlease try again later.(202LC_LF_MI)")
+                                .setTitleText("Oops..!!")
+                                .show();
+
+                    }
+                });
 
     }
 

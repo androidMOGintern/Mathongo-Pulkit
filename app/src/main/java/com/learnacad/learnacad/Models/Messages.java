@@ -1,8 +1,9 @@
 package com.learnacad.learnacad.Models;
 
 
-import com.orm.dsl.Ignore;
 import com.orm.dsl.Table;
+
+import java.util.ArrayList;
 
 /**
  * Created by pulkit-mac on 25/01/18.
@@ -16,10 +17,11 @@ public class Messages {
     private String img_url;
     private String intent;
     private String process_id;
-    Integer minicourse_id;
-    String material_name;
-    String category_level_II;
-    String category_level_I;
+    private Integer minicourse_id;
+    private String material_name;
+    private String category_level_II;
+    private String category_level_I;
+    private Boolean lecture_id;
 
     public Messages(String title, String message, Boolean seen) {
         this.title = title;
@@ -40,7 +42,7 @@ public class Messages {
 
     }
 
-    public Messages(String title, String message, Boolean seen, String img_url, String intent, String process_id, Integer minicourse_id, String material_name, String category_level_II, String category_level_I) {
+    public Messages(String title, String message, Boolean seen, String img_url, String intent, String process_id, Integer minicourse_id, String material_name, String category_level_II, String category_level_I, Boolean lecture_id) {
         this.title = title;
         this.message = message;
         this.seen = seen;
@@ -51,6 +53,8 @@ public class Messages {
         this.material_name = material_name;
         this.category_level_II = category_level_II;
         this.category_level_I = category_level_I;
+        this.lecture_id = lecture_id;
+
     }
 
     public String getMessage() {
@@ -140,4 +144,13 @@ public class Messages {
     public void setCategory_level_I(String category_level_I) {
         this.category_level_I = category_level_I;
     }
+
+    public Boolean getLecture_id() {
+        return lecture_id;
+    }
+
+    public void setLecture_id(Boolean lecture_id) {
+        this.lecture_id = lecture_id;
+    }
+
 }
