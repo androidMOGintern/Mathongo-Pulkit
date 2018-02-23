@@ -47,21 +47,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--<service android:name=".Notifications.MyFirebaseMessagingService">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-        <!--</intent-filter>-->
-        <!--</service>-->
-        <!--<service android:name=".Notifications.MyFirebaseInstanceIDService">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
-        <!--</intent-filter>-->
-        <!--</service>-->
+        <!-- <service android:name=".Notifications.MyFirebaseMessagingService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <service android:name=".Notifications.MyFirebaseInstanceIDService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
 
         <activity
             android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.LibraryCourseContentActivity"
             android:label=""
@@ -76,19 +76,19 @@
             android:name=".Activities.LecturePlayerActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" >
-        <intent-filter>
-            <action android:name="com.learnacad.learnacad.Lecture" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="com.learnacad.learnacad.Lecture" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activities.NotificationsActivity" />
 
-        <!--<service-->
-        <!--android:name=".Service.MyFirebaseMessagingService"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true" />-->
+        <!-- <service -->
+        <!-- android:name=".Service.MyFirebaseMessagingService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true" /> -->
 
         <activity android:name=".Activities.MaterialViewActivity">
             <intent-filter>
@@ -113,7 +113,8 @@
         </activity>
         <activity
             android:name=".Activities.NotificationList"
-            android:parentActivityName=".Activities.BaseActivity"></activity>
+            android:parentActivityName=".Activities.BaseActivity" />
+        <activity android:name=".Activities.CheckoutActivity"></activity>
     </application>
 
 </manifest>

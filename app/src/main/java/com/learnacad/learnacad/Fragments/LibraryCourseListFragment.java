@@ -44,6 +44,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.flurry.android.FlurryAgent;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.learnacad.learnacad.Activities.BaseActivity;
 import com.learnacad.learnacad.Adapters.ChipsViewAdapeter;
 import com.learnacad.learnacad.Adapters.LibraryCourseListAdapter;
@@ -54,6 +59,7 @@ import com.learnacad.learnacad.Models.FiltersViewModel;
 import com.learnacad.learnacad.Models.Messages;
 import com.learnacad.learnacad.Models.Minicourse;
 import com.learnacad.learnacad.Models.SessionManager;
+import com.learnacad.learnacad.Models.Student;
 import com.learnacad.learnacad.Models.Tutor;
 import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.Activities.NotificationList;
@@ -92,6 +98,8 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
     Filter f;
     Bundle b;
     Context mContext;
+    Student student;
+    DatabaseReference myRootref;
     SearchView searchView;
     FiltersViewModel mViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -194,6 +202,30 @@ public class LibraryCourseListFragment extends Fragment implements ChipsViewAdap
 //                item.expandActionView();
 //                getActivity().invalidateOptionsMenu();
 
+
+            }
+        });
+
+
+        List<Student> students = SugarRecord.listAll(Student.class);
+        if (students != null && students.size() > 0)
+            student = students.get(0);
+
+        myRootref = FirebaseDatabase.getInstance().getReference();
+        Log.i(TAG, "onCreateView: "+students);
+        myRootref.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild(student.getMobileNum())) {
+                    Log.i("TAG", "onDataChange: has child" );
+                    myRootref.child("users").child(student.getMobileNum()).setValue(student);
+                    myRootref.child("users").child(student.getMobileNum()).child("coins").setValue(200);
+                    myRootref.child("users").child(student.getMobileNum()).child("usedReferalCode").setValue(student.getName().substring(0,3)+student.getMobileNum().substring(6));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

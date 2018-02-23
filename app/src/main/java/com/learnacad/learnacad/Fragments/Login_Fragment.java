@@ -21,11 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.flurry.android.FlurryAgent;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.learnacad.learnacad.Activities.BaseActivity;
 import com.learnacad.learnacad.Models.SessionManager;
 import com.learnacad.learnacad.Models.Student;
@@ -50,28 +56,30 @@ import static com.orm.SugarRecord.listAll;
 public class Login_Fragment extends Fragment {
 
     public static View view;
-    String mobileNum,password;
+    String mobileNum, password;
     Snackbar snackbar;
-    String toSendBodyParam,myReferalCode,toNotSendParam;
+    String toSendBodyParam, myReferalCode, toNotSendParam;
     ProgressDialog pd;
     Student student;
     TextView textView_Forgotpass;
     Context mContext;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(view != null){
+        if (view != null) {
 
             ViewGroup parent = (ViewGroup) view.getParent();
-            if(parent != null){
+            if (parent != null) {
 
                 parent.removeView(view);
             }
         }
         try {
-            view = inflater.inflate(R.layout.fragment_login,container,false);
-        }catch (InflateException e){
+            view = inflater.inflate(R.layout.fragment_login, container, false);
+        } catch (InflateException e) {
 
 
         }
@@ -85,8 +93,8 @@ public class Login_Fragment extends Fragment {
         final TextInputEditText mobileNumEditText = view.findViewById(R.id.loginMobileNumEditText);
         final TextInputEditText passwordEditText = view.findViewById(R.id.loginPasswordEditText);
         Button signUp = view.findViewById(R.id.loginSingupButton);
-        Typeface typefaceMedium = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Medium.ttf");
-        Typeface typefaceRegular = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Regular.ttf");
+        Typeface typefaceMedium = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
+        Typeface typefaceRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
         mobileNumEditText.setTypeface(typefaceRegular);
         signUp.setTypeface(typefaceMedium);
         passwordEditText.setTypeface(typefaceRegular);
@@ -100,14 +108,14 @@ public class Login_Fragment extends Fragment {
                 FlurryAgent.logEvent("Forgot_Password_Clicked");
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
-                fragmentTransaction.replace(R.id.content_login_frame,new Forgot_Password_Mobile());
+                fragmentTransaction.replace(R.id.content_login_frame, new Forgot_Password_Mobile());
                 fragmentTransaction.commit();
             }
         });
 
         mContext = getActivity();
 
-        snackbar = Snackbar.make(view,null,Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(view, null, Snackbar.LENGTH_INDEFINITE);
 
 
         pd = new ProgressDialog(getContext());
@@ -117,7 +125,7 @@ public class Login_Fragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
-                fragmentTransaction.replace(R.id.content_login_frame,new SignUp_Step1_Fragment());
+                fragmentTransaction.replace(R.id.content_login_frame, new SignUp_Step1_Fragment());
                 fragmentTransaction.commit();
             }
         });
@@ -141,7 +149,7 @@ public class Login_Fragment extends Fragment {
                 if (password.isEmpty()) {
 
 
-                     passwordEditText.setError("Please enter your Password to continue.");
+                    passwordEditText.setError("Please enter your Password to continue.");
 //                    snackbar.dismiss();
 //                    Snackbar snackbar1 = Snackbar.make(view,"Enter Password",Snackbar.LENGTH_LONG);
 //                    View view1 = snackbar1.getView();
@@ -154,12 +162,10 @@ public class Login_Fragment extends Fragment {
                 }
 
 
+                if (mobileNum.length() != 10 || (!TextUtils.isDigitsOnly(mobileNum))) {
 
 
-                    if (mobileNum.length() != 10 || (!TextUtils.isDigitsOnly(mobileNum))) {
-
-
-                        mobileNumEditText.setError("Please enter a valid mobile number.");
+                    mobileNumEditText.setError("Please enter a valid mobile number.");
 
 //                        snackbar.dismiss();
 //                        Snackbar snackbar1 = Snackbar.make(view, "Enter a valid mobile number", Snackbar.LENGTH_LONG);
@@ -169,20 +175,20 @@ public class Login_Fragment extends Fragment {
 //                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.redcircle, 0, 0, 0);
 //                        textView.setCompoundDrawablePadding(8);
 //                        snackbar1.show();
-                        return;
-                    }
+                    return;
+                }
 
 
-                if(isConnected()){
+                if (isConnected()) {
 
-                    authorizeUser(mobileNum,password,view);
+                    authorizeUser(mobileNum, password, view);
                     FlurryAgent.logEvent("LoginButton_loginFragment_Clicked");
 
 
-                }else{
+                } else {
                     snackbar.dismiss();
 
-                    new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                             .setContentText("No Internet Conncetion.\n Please try again later.")
                             .setTitleText("No Connection")
                             .show();
@@ -205,23 +211,23 @@ public class Login_Fragment extends Fragment {
 
 
         snackbar.setText("Logging you in...");
-            View view = snackbar.getView();
-            TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greencircle,0,0,0);
-            view.setPadding(0,0,0,0);
+        View view = snackbar.getView();
+        TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greencircle, 0, 0, 0);
+        view.setPadding(0, 0, 0, 0);
         textView.setCompoundDrawablePadding(8);
-            snackbar.show();
-        AndroidNetworking.post(Api_Urls.BASE_URL+ "authorize")
-                .addUrlEncodeFormBodyParameter("contact",mobileNum)
-                .addUrlEncodeFormBodyParameter("password",password)
-                .addUrlEncodeFormBodyParameter("email","")
+        snackbar.show();
+        AndroidNetworking.post(Api_Urls.BASE_URL + "authorize")
+                .addUrlEncodeFormBodyParameter("contact", mobileNum)
+                .addUrlEncodeFormBodyParameter("password", password)
+                .addUrlEncodeFormBodyParameter("email", "")
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             String result = response.getString("success");
-                            if(result.contentEquals("true")){
+                            if (result.contentEquals("true")) {
 
                                 String tokenId = response.getString("token");
                                 JSONObject s = response.getJSONObject("student");
@@ -239,15 +245,15 @@ public class Login_Fragment extends Fragment {
                                 SugarRecord.save(session);
                                 SugarRecord.save(student);
                                 snackbar.dismiss();
+
                                 gotoBaseActivity();
-                            }
-                            else{
+                            } else {
 
                                 String message = response.getString("message");
 
                                 snackbar.dismiss();
 
-                                new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                                         .setContentText(message)
                                         .setTitleText("Wrong Credentials")
                                         .setConfirmText("Ok")
@@ -266,25 +272,25 @@ public class Login_Fragment extends Fragment {
 
                         } catch (JSONException e) {
 
-                            Log.d("jsonrror",e.getLocalizedMessage());
-                            Log.d("jsonrror",e.getMessage());
-                            Log.d("jsonrror",e.toString());
-                            new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                            Log.d("jsonrror", e.getLocalizedMessage());
+                            Log.d("jsonrror", e.getMessage());
+                            Log.d("jsonrror", e.toString());
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                                     .setContentText("There seems a problem with us.\nPlease try again later.(101LOG_AU)")
                                     .setTitleText("Oops..!!")
                                     .show();
-                          //  snackbar.dismiss();
+                            //  snackbar.dismiss();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
 
-                        Log.d("libraryerror",anError.getLocalizedMessage());
-                        Log.d("libraryerror",anError.getErrorCode() + " ");
+                        Log.d("libraryerror", anError.getLocalizedMessage());
+                        Log.d("libraryerror", anError.getErrorCode() + " ");
 
 
-                        new SweetAlertDialog(getActivity(),SweetAlertDialog.ERROR_TYPE)
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                                 .setContentText("Connection Error!\nPlease try again later.(202LOG_AU)")
                                 .setTitleText("Oops..!!")
                                 .show();
@@ -295,8 +301,7 @@ public class Login_Fragment extends Fragment {
     }
 
 
-
-    public void gotoBaseActivity(){
+    public void gotoBaseActivity() {
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -304,7 +309,7 @@ public class Login_Fragment extends Fragment {
         startActivity(intent);
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 

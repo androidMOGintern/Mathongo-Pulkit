@@ -34,6 +34,11 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.flurry.android.FlurryAgent;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.learnacad.learnacad.Fragments.Bookmarks_Fragment;
 import com.learnacad.learnacad.Fragments.LibraryCourseListFragment;
 import com.learnacad.learnacad.Fragments.Library_Fragment;
@@ -99,7 +104,6 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-
         SugarRecord.deleteAll(MyCoursesEnrolled.class);
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.setAnalyticsCollectionEnabled(true);
@@ -112,6 +116,7 @@ public class BaseActivity extends AppCompatActivity
         drawer = findViewById(R.id.drawer_layout);
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         //checkForUpdate();
 

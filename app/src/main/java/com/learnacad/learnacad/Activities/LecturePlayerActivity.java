@@ -37,9 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.learnacad.learnacad.Adapters.LecturePlayerViewPagerAdapter;
 import com.learnacad.learnacad.Models.Lecture;
 import com.learnacad.learnacad.Models.SessionManager;
+import com.learnacad.learnacad.Models.Student;
 import com.learnacad.learnacad.Models.Tutor;
 import com.learnacad.learnacad.Networking.Api_Urls;
 import com.learnacad.learnacad.R;
+import com.orm.SugarRecord;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +78,7 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
     int currPosition;
     ProgressBar progressBar;
     ArrayList<Lecture> lectures;
+    Student student;
     static TextView aTitletextView, aDescptextView, teachersNametextView, teachersDesctextView, adurationTextView;
     private String[] tabTitles = {"LECTURES", "COMMENTS", "DOUBTS"};
     FirebaseDatabase database;
@@ -108,47 +111,77 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
         final int position = intent.getIntExtra("selectedPosition", 0);
         lectures = (ArrayList<Lecture>) intent.getSerializableExtra("lectureList");
 
-//        database = FirebaseDatabase.getInstance();
-//        myRootref = database.getReference("users/PUL9582");
-//        myRootref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                coins = dataSnapshot.child("coins").getValue(Integer.class);
-//                Log.i("TAG", "onDataChange: "+coins);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//
-//            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-//                    .setTitleText("Are you sure?")
-//                    .setContentText("Your 5 Coins Would Be Deducted for watching this video")
-//                    .setCancelText("No,Dont Continue")
-//                    .setConfirmText("Yes,Continue")
-//                    .showCancelButton(true)
-//                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                        @Override
-//                        public void onClick(SweetAlertDialog sDialog) {
-//                            myRootref.child("coins").setValue(coins-5);
-//                            YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
-//                            youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, LecturePlayerActivity.this);
-//                            sDialog.dismissWithAnimation();
-//                        }
-//                    })
-//                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                        @Override
-//                        public void onClick(SweetAlertDialog sDialog) {
-//                            sDialog.cancel();
-//                            onBackPressed();
-//
-//                        }
-//                    })
-//                    .show();
+        database = FirebaseDatabase.getInstance();
+
+        List<Student> students = SugarRecord.listAll(Student.class);
+        if (students != null && students.size() > 0)
+            student = students.get(0);
+        myRootref = FirebaseDatabase.getInstance().getReference("users/" + student.getMobileNum());
+        myRootref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                coins = dataSnapshot.child("coins").getValue(Integer.class);
+                Log.i("TAG", "onDataChange: " + coins);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Are you sure?")
+                .setContentText("Your 5 Coins Would Be Deducted for watching this video")
+                .setCancelText("No,Dont Continue")
+                .setConfirmText("Yes,Continue")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        if (coins <= 0) {
+                            new SweetAlertDialog(LecturePlayerActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("Oops?")
+                                    .setContentText("Looks Like you dont have enough coins.Want to buy more ?")
+                                    .setCancelText("No,Dont Continue")
+                                    .setConfirmText("Yes,Continue")
+                                    .showCancelButton(true)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            Intent i = new Intent(LecturePlayerActivity.this,CheckoutActivity.class);
+                                            i.putExtra("studentid",student.getMobileNum());
+                                            startActivity(i);
+                                        }
+                                    })
+                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.cancel();
+                                            onBackPressed();
+
+                                        }
+                                    })
+                                    .show();
+                        } else {
+                            myRootref.child("coins").setValue(coins - 5);
+                            YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+                            youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, LecturePlayerActivity.this);
+                            sDialog.dismissWithAnimation();
+                        }
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.cancel();
+                        onBackPressed();
+
+                    }
+                })
+                .show();
 
 
         aTitletextView = findViewById(R.id.attachedLayoutTitleTextView);
@@ -194,8 +227,8 @@ public class LecturePlayerActivity extends AppCompatActivity implements YouTubeP
             }
         });
 
-        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
-        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, this);
+//        YouTubePlayerSupportFragment youTubePlayerSupportFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtubePlayer);
+//        youTubePlayerSupportFragment.initialize(GOOGLE_DEVELOPER_KEY, this);
 
         LinearLayout linearLayout = (LinearLayout) tabLayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
