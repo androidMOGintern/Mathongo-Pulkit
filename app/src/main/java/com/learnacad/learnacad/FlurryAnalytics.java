@@ -3,6 +3,7 @@ package com.learnacad.learnacad;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,8 +99,8 @@ public class FlurryAnalytics extends Application {
                     fetchdata(Integer.valueOf(data.optString("MINICOURSE_ID", "0")));
 
             }
-
-            addtodatabase();
+            if (!data.optBoolean("ISLIVE"))
+                addtodatabase();
         }
     }
 
@@ -194,6 +195,8 @@ public class FlurryAnalytics extends Application {
             String category_level_I = null;
             String category_level_II = null;
             Boolean lecture_id = false;
+            Boolean islive = false;
+            String video_id = null;
             final Intent resultIntent;
             if (data != null) {
                 customKey = data.optString("intent", null);
@@ -203,6 +206,8 @@ public class FlurryAnalytics extends Application {
                 category_level_I = data.optString("CATEGORY_1");
                 category_level_II = data.optString("CATEGORY_2");
                 lecture_id = data.optBoolean("ISLECTURE");
+                islive = data.optBoolean("ISLIVE");
+                video_id = data.optString("VIDEO_ID");
             }
             if (customKey != null) {
                 if (customKey.equals("com.learnacad.learnacad.Material") || customKey.equals("com.learnacad.learnacad.Lecture") || customKey.equals("com.learnacad.learnacad.Library"))
@@ -237,10 +242,17 @@ public class FlurryAnalytics extends Application {
 //                    resultIntent.putExtra("LECTURE",1);
 
                 }
-            } else {
+            } else if (islive) {
+                resultIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video_id));
+                resultIntent.putExtra("VIDEO_ID", video_id);
+            } else
+
+            {
                 resultIntent = new Intent(getApplicationContext(), NotificationList.class);
             }
-            new AsyncTask<Void, Void, Void>() {
+            new AsyncTask<Void, Void, Void>()
+
+            {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     SugarRecord.executeQuery("Update Messages SET seen = 1 where id = ?", String.valueOf(position));
@@ -251,7 +263,9 @@ public class FlurryAnalytics extends Application {
                 protected void onPostExecute(Void aVoid) {
                     startActivity(resultIntent);
                 }
-            }.execute();
+            }.
+
+                    execute();
         }
     }
 }
