@@ -32,19 +32,19 @@
         android:layout_alignTop="@+id/cardView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"
-android:background="@color/transparent"
+        android:background="@color/transparent"
         android:src="@drawable/whatsapp" />
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView2"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_below="@+id/referals_noofcoinstextview"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp"
         card_view:cardBackgroundColor="@android:color/transparent"
-        card_view:cardElevation="0dp"
-        android:id="@+id/cardView2">
+        card_view:cardElevation="0dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -75,16 +75,16 @@ android:background="@color/transparent"
         android:layout_height="100dp"
         android:layout_below="@+id/referals_sharebutton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" >
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/textView4"
-            android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="When your friend install the app and enter your referal code both of you get 50 coins" />
+            android:gravity="center"
+            android:text="When your friend install the app and enter your referal code both of you get 50 coins"
+            android:textSize="18sp" />
     </android.support.v7.widget.CardView>
 
     <TextView
@@ -94,10 +94,34 @@ android:background="@color/transparent"
         android:layout_above="@+id/referals_sharebutton"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:textSize="20sp"
-        android:padding="5dp"
         android:background="@color/colorPrimaryDark"
-        android:text="Add More Coins" />
+        android:padding="5dp"
+        android:text="Add More Coins"
+        android:textSize="20sp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/referal_textinputlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="41dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Enter Referal Code" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/referal_checkbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/referal_textinputlayout"
+        android:layout_centerHorizontal="true"
+        android:text="CHECK" />
 
 
 </RelativeLayout>
