@@ -38,6 +38,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.content.ContentValues.TAG;
 import static com.orm.SugarRecord.listAll;
+import static java.lang.Boolean.FALSE;
 
 /**
  * Created by sahil on 31/12/17.
@@ -49,6 +50,7 @@ public class FlurryAnalytics extends Application {
     Long position;
     Messages messages;
     ArrayList<Lecture> lectures;
+    static boolean savetodatabase = true;
 
     @Override
     public void onCreate() {
@@ -78,7 +80,7 @@ public class FlurryAnalytics extends Application {
         public void notificationReceived(OSNotification notification) {
 
             JSONObject data = notification.payload.additionalData;
-            String customKey;
+
 
             title = notification.payload.title;
             body = notification.payload.body;
@@ -97,10 +99,11 @@ public class FlurryAnalytics extends Application {
                 messages.setLecture_id(data.optBoolean("ISLECTURE", false));
                 if (data.optBoolean("ISLECTURE"))
                     fetchdata(Integer.valueOf(data.optString("MINICOURSE_ID", "0")));
-
             }
+            Log.i(TAG, "notificationReceived: " + savetodatabase);
             if (!data.optBoolean("ISLIVE"))
-                addtodatabase();
+                if (savetodatabase)
+                    addtodatabase();
         }
     }
 
@@ -134,6 +137,7 @@ public class FlurryAnalytics extends Application {
                             }
 
                         } catch (JSONException e) {
+                            Log.i(TAG, "fetchdata: catch");
                             new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
                                     .setContentText("There seems a problem with us.\nPlease try again later.(101LC_LF_MI)")
                                     .setTitleText("Oops..!!")
@@ -145,10 +149,8 @@ public class FlurryAnalytics extends Application {
 
                     @Override
                     public void onError(ANError anError) {
-                        new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
-                                .setContentText("Connection Error!\nPlease try again later.(202LC_LF_MI)")
-                                .setTitleText("Oops..!!")
-                                .show();
+                        Log.i(TAG, "fetchdata: error");
+                        savetodatabase=FALSE;
 
                     }
                 });
@@ -210,7 +212,7 @@ public class FlurryAnalytics extends Application {
                 video_id = data.optString("VIDEO_ID");
             }
             if (customKey != null) {
-                if (customKey.equals("com.learnacad.learnacad.Material") || customKey.equals("com.learnacad.learnacad.Lecture") || customKey.equals("com.learnacad.learnacad.Library"))
+                if ((customKey.equals("com.learnacad.learnacad.Material") || customKey.equals("com.learnacad.learnacad.Lecture") || customKey.equals("com.learnacad.learnacad.Library")) && savetodatabase)
                     resultIntent = new Intent(customKey);
                 else
                     resultIntent = new Intent(getApplicationContext(), NotificationList.class);
@@ -233,7 +235,7 @@ public class FlurryAnalytics extends Application {
                     resultIntent.putExtras(bundle);
                     resultIntent.putExtra("TO_SHOW", "RESOURCE");
                 }
-                if (lecture_id) {
+                if (lecture_id && savetodatabase) {
                     resultIntent.putExtra("lectureList", lectures);
                     resultIntent.putExtra("selectedPosition", lectures.size() - 1);
                     resultIntent.putExtra("selectedLecture", lectures.get(lectures.size() - 1));

@@ -36,6 +36,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/backgroundBlue" />
+        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="00F0F8FF" />
+
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"
             android:value="DISABLE" />

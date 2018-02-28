@@ -67,7 +67,6 @@ public class NotificationList extends AppCompatActivity {
     ArrayList<Lecture> lectures;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,9 +177,14 @@ public class NotificationList extends AppCompatActivity {
             public void onItemClick(View view, final int position) {
                 Log.i(TAG, "onItemClick: " + mList.get(position).getIntent());
                 if (mList.get(position).getIntent() != null) {
+                    final SweetAlertDialog pDialog = new SweetAlertDialog(NotificationList.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Loading");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     final Intent resultIntent;
                     resultIntent = new Intent(mList.get(position).getIntent());
-                    resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     resultIntent.putExtra("MINICOURSE_ID", mList.get(position).getMinicourse_id());
                     if (mList.get(position).getMaterial_name() != null && mList.get(position).getCategory_level_I() == null) {
                         Material m = new Material(mList.get(position).getMaterial_name(), mList.get(position).getMinicourse_id());
@@ -188,6 +192,7 @@ public class NotificationList extends AppCompatActivity {
                         bundle.putSerializable("Material", m);
                         resultIntent.putExtras(bundle);
                         resultIntent.putExtra("TO_SHOW", "MATERIAL");
+                        pDialog.dismissWithAnimation();
                         startActivity(resultIntent);
                     }
                     if (mList.get(position).getMaterial_name() != null && mList.get(position).getCategory_level_I() != null) {
@@ -199,30 +204,21 @@ public class NotificationList extends AppCompatActivity {
                         bundle.putSerializable("Material", m);
                         resultIntent.putExtras(bundle);
                         resultIntent.putExtra("TO_SHOW", "RESOURCE");
+                        pDialog.dismissWithAnimation();
                         startActivity(resultIntent);
                     }
                     if (mList.get(position).getLecture_id()) {
-//                        new AsyncTask<Void, Void, Void>() {
-//                            @Override
-//                            protected Void doInBackground(Void... voids) {
-//                                return null;
-//                            }
-//
-//                            @Override
-//                            protected void onPostExecute(Void aVoid) {
-//                                super.onPostExecute(aVoid);
-
-//                            }
-//                        }.execute();
-                        fetchdata(mList.get(position).getMinicourse_id(),resultIntent);
+                        fetchdata(mList.get(position).getMinicourse_id(), resultIntent);
+                        pDialog.dismissWithAnimation();
 
 
                     } else {
                         resultIntent.putExtra("PROCESS_ID", mList.get(position).getProcess_id());
+                        pDialog.dismissWithAnimation();
                         startActivity(resultIntent);
                     }
 
-                }else {
+                } else {
                     Toast.makeText(NotificationList.this, "Nothing To Open", Toast.LENGTH_SHORT).show();
                 }
 
@@ -280,8 +276,8 @@ public class NotificationList extends AppCompatActivity {
                                 lectures.add(lecture);
                                 Log.i(TAG, "onResponse:Api has been hit in notification list" + lecture);
                                 resultIntent.putExtra("lectureList", lectures);
-                                resultIntent.putExtra("selectedPosition", lectures.size()-1);
-                                resultIntent.putExtra("selectedLecture", lectures.get(lectures.size()-1));
+                                resultIntent.putExtra("selectedPosition", lectures.size() - 1);
+                                resultIntent.putExtra("selectedLecture", lectures.get(lectures.size() - 1));
                                 startActivity(resultIntent);
 
                             }
